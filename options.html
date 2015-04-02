@@ -1,0 +1,25 @@
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head 
+  <title>Options de l'extension AuRevoirPatrie </title>
+</head>
+<body id="Options">
+  <h3>Comportement</h3>
+  <input type="checkbox" id="checkDaily" name="checkDaily"> <label for="checkDaily">Déterminer chaque jour et de manière aléatoire si l'extension est activée</label><br>
+
+  <h3>Mise en forme</h3>
+  Élément HTML à placer avant une expression modifiée : <input type="text" id="BaliseMotChangeO" name="BaliseMotChangeO"> <br>
+  Élément HTML à placer après une expression modifiée : <input type="text" id="BaliseMotChangeF" name="BaliseMotChangeF"> <br>
+  Élément HTML à placer avant une expression non-modifiée* : <input type="text" id="BaliseMotInchangeO" name="BaliseMotInchangeO"> <br>
+  Élément HTML à placer après une expression non-modifiée* : <input type="text" id="BaliseMotInchangeF" name="BaliseMotInchangeF"> <br>
+  <br>
+* certains groupe de mots ne sont pas modifier afin de respecter la grammaire (par exemple avec les participes passé avec le verbe avoir)<br>
+  <br>
+  <br>
+  <br>
+  <h3>Réinitialisation des paramètres</h3>
+  <button type="button" id="Reset" name="Reset">Revenir aux paramètres par défaut</button> <br>
+  <div id="status"></div>
+  <script src="options.js"></script>
+</body>
+</html>
