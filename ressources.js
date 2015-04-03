@@ -2091,7 +2091,7 @@ var complete = {
   'touché': 'touchée', 'touchée': 'touché','touchés': 'touchées', 'touchées': 'touchés',
   'tourmenté': 'tourmentée', 'tourmentée': 'tourmenté','tourmentés': 'tourmentées', 'tourmentées': 'tourmentés',
   'tourné': 'tournée', 'tournée': 'tourné','tournés': 'tournées', 'tournées': 'tournés',
-  'tous': 'toutes', 'toutes': 'tous','toutes': 'tous', 'tous': 'toutes',
+  //~ 'tous': 'toutes', 'toutes': 'tous','toutes': 'tous', 'tous': 'toutes',
   'tracé': 'tracée', 'tracée': 'tracé','tracés': 'tracées', 'tracées': 'tracés',
   'trader': 'tradeuse', 'tradeuse': 'trader','traders': 'tradeuses', 'tradeuses': 'traders',
   'traducteur': 'traductrice', 'traductrice': 'traducteur','traducteurs': 'traductrices', 'traductrices': 'traducteurs',
@@ -2186,6 +2186,10 @@ var complete = {
 // =============================================================================
 
 var correspondance=[
+["les","les",""],
+["tous","toutes",""],
+["tout","toute",""],
+["humain","humaine","s"],
 ["lui-même","elle-même",""],
 ["eux-même","elles-même",""],
 ["qu'il","qu'elle","s"],
@@ -2227,6 +2231,7 @@ for(var i=0; i<correspondance.length; i++)
     complete[correspondance[i][1]+correspondance[i][2]]=correspondance[i][0]+correspondance[i][2]
   }
 }
+
 var map = complete;
 
 var map_singulier={};
@@ -2251,9 +2256,9 @@ var verb_avoir  =['a','ont','eu','ai','as','avez','avons','avait','avaient','ava
 var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
 
 // Définition des pronoms au singulier
-var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur'];
+var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur','toute autre','toute autre', 'tout','toute'];
 // Définition des pronoms au pluriel
-var pronoms_pluriel  =['des','les','ses','vos','leurs'];
+var pronoms_pluriel  =['des','les','ses','vos','leurs','tous','toutes'];
 
 
 

@@ -100,7 +100,6 @@ var reMatchWord=new RegExp('\\b('+ //début de mot
 function swapWord(word) {
   //~ return '^'+word+'$'; // uncomment this to debug the regex in genderswap (reMatchWord)
   var suf="";
-
   if (reLastcharNotInWord.test(word)){
       suf=word.substring(word.length - 1,word.length);
       word=word.substring(0,word.length - 1);
@@ -109,28 +108,39 @@ function swapWord(word) {
   if (reModAvoir.test(t[0])){
     return bracket_nosw[0] + word + bracket_nosw[1] + suf;
   }
-  if (t.length == 2){ //gère les mots inscrits comme cas particuliers
-    if (rePronomsSingulier.test(t[0])){
-      if (searchForSingulier.test(t[1])){
-          return matchCase(word,
-                          t[0].toLowerCase().replace(searchFor, findMatch) +
-                          ' ' + t[1].toLowerCase().replace(searchForSingulier, findMatchSingulier)) + suf;
-      } else if (searchFor.test(t[1])) {
-          return matchCase(word,
-                          t[0].toLowerCase().replace(searchFor, findMatch) +
-                          ' ' + t[1].toLowerCase().replace(searchFor, findMatch)) + suf;
-      }
-    } else if (rePronomsPluriel.test(t[0])){
-      if (searchForPluriel.test(t[1])){
-          return matchCase(word,
-                          t[0] + ' '
-                          + t[1].toLowerCase().replace(searchForPluriel, findMatchPluriel)) + suf;
-      } else if (searchFor.test(t[1])) {
-          return matchCase(word,
-                          t[0].toLowerCase().replace(searchFor, findMatch) +
-                          ' ' + t[1].toLowerCase().replace(searchFor, findMatch)) + suf;
-      }
+  if (t.length > 1){ //gère les mots inscrits comme cas particuliers et les pronoms sur deux mots
+    var rep=[];
+    var rep_ok=false;
+    var rep_singulier=false;
+    var rep_pluriel=false;
+    var rep_alt=false;
+    
+    rep[0]=t[0].toLowerCase().replace(searchFor, findMatch);
+    if (t.length > 2){
+      rep[1]=t[1].toLowerCase().replace(searchFor, findMatch);
+      if (rePronomsSingulier.test(t[0] + " " + t[1])) rep_singulier=true;
+      else if (rePronomsPluriel.test(t[0] + " " + t[1])) rep_pluriel=true;
+    } else {
+      if (rePronomsSingulier.test(t[0])) rep_singulier=true;
+      else if (rePronomsPluriel.test(t[0])) rep_pluriel=true;
     }
+
+    if (rep_singulier){
+      if (searchForSingulier.test(t[t.length-1])){
+        rep[t.length-1]=t[t.length-1].toLowerCase().replace(searchForSingulier, findMatchSingulier);
+        rep_ok=true;
+      } else rep_alt=true;
+    } else if (rep_pluriel){
+      if (searchForPluriel.test(t[t.length-1])){
+        rep[t.length-1]=t[t.length-1].toLowerCase().replace(searchForPluriel, findMatchPluriel);
+        rep_ok=true;
+      } else rep_alt=true;
+    }
+    if ( (rep_alt) && (searchFor.test(t[t.length-1])) ){
+      rep[t.length-1]=t[t.length-1].toLowerCase().replace(searchFor, findMatch);
+      rep_ok=true;
+    }
+    if ( rep_ok ) return matchCase(word, rep.join(' ')) + suf;
   }
   return matchCase(word, word.toLowerCase().replace(searchFor, findMatch))+ suf;
 }
