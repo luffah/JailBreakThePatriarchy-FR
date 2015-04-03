@@ -39,6 +39,8 @@ var concatString = function(obj) {
   return parts.join('|');
 };
 
+var reLowerCase=new RegExp('['+wcharset.toLowerCase()+']$','');
+var reUpperCase=new RegExp('['+wcharset.toUpperCase()+']$','');
 //Fonction qui gere la casse des mots dans un n-gramme
 function matchCase(old_word, replacement) {
   var first = new String();
@@ -54,11 +56,11 @@ function matchCase(old_word, replacement) {
       first = t_old_word[i].charAt(0);
       second = t_old_word[i].charAt(1);
       
-      if (/[a-z]/.test(first)){
+      if (reLowerCase.test(first)){
           t_replacement[i]=t_replacement[i].toLowerCase();
       }
       else {
-        if (/[A-Z]/.test(second)) ret=t_replacement[i].toUpperCase();
+        if (reUpperCase.test(second)) ret=t_replacement[i].toUpperCase();
         else t_replacement[i]=t_replacement[i].charAt(0).toUpperCase() + t_replacement[i].slice(1).toLowerCase();;
       }
     }
@@ -95,8 +97,8 @@ var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
 var reMatchWord=new RegExp('[^'+ wcharset + ']?' + '('+ //début de mot
       '('+verb_avoir.join('|')+')' + '[ ]+' + '(('+mot_negation.join('|')+')[ ]+)?'+'['+ wcharset + ']{2,}'+ '|' + // les mots/verbes conjugués avec avoir pour ne pas y toucher
       '('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')' + '[ ]+' +'['+ wcharset + ']{2,}'+ '|' + // les noms précédés de pronoms
-      '['+ wcharset + ']['+ wcharset + wbindset + ']+' + ')' +  // n'importe quel mot (incluant les charactères d'union)
-      '[^'+ wcharset + ']?', 'ig'); //fin de mot (on détecte n'importe quel caractère qui ne doit pas appartenir aux mots) 
+      '['+ wcharset + ']['+ wcharset + wbindset + ']+' + // n'importe quel mot (incluant les charactères d'union)
+      ')' + '[^'+ wcharset + ']?', 'ig'); //fin de mot (on détecte n'importe quel caractère qui ne doit pas appartenir aux mots) 
 
 //Fonction qui remplace un mot par un autre en utilisant la fonction matchCase
 function swapWord(word) {
