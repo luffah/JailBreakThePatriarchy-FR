@@ -2186,6 +2186,7 @@ var complete = {
 // =============================================================================
 
 var correspondance=[
+['membres','membres',''],
 ["les","les",""],
 ["tous","toutes",""],
 ["tout","toute",""],
@@ -2258,9 +2259,11 @@ var verb_avoir  =['a','ont','eu','ai','as','avez','avons','avait','avaient','ava
 var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
 
 // Définition des pronoms au singulier
-var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur','toute autre','toute autre', 'tout','toute'];
+var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur',
+                          'toute autre','tout autre',
+                          'tout le', 'toute la', 'tout un', 'toute une'];
 // Définition des pronoms au pluriel
-var pronoms_pluriel  =['des','les','ses','vos','leurs','tous','toutes'];
+var pronoms_pluriel  =['des','les','ses','vos','leurs','toutes les', 'tous les'];
 
 
 
