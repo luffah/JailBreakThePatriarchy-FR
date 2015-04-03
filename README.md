@@ -1,14 +1,18 @@
-# JailBreakThePatriarchy-FR
-Fork Français de JailBreak The Patriarchy.
+#
+JailBreakThePatriarchy-FR est un fourchette (version) française de JailBreak The Patriarchy.
 
-= Wishing to install this extensions =
-
+Installation
+--------------------------------------------------------------------------------------------------------------
 For Chromium / Chrome :
 Just load this directory, with the developer mode in chrome://extensions/   
 
-= Note =
+Note
+--------------------------------------------------------------------------------------------------------------
 Aknowledging this program is a fork (even if i found the code was not the best), here the original README.
+
 Informations about English language does not apply.
+
+Original README
 --------------------------------------------------------------------------------------------------------------
 Chrome extension to swap gendered pronouns and other terms throughout web browsing.
 
