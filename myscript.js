@@ -85,12 +85,14 @@ var searchForSingulier = new RegExp('^('+ concatString(map_singulier) + ')$', 'i
 var searchForPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'ig');
 
 var reLastcharNotInWord=new RegExp('[^'+wcharset+']$','i');
+var reFirstcharNotInWord=new RegExp('^[^'+wcharset+']','i');
 var reModAvoir=new RegExp('^('+verb_avoir.join('|')+')$','');
 var rePronomsSingulier=new RegExp('^('+pronoms_singulier.join('|')+')$','i');
 var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
 
 // Définition du format des mots à traiter
-var reMatchWord=new RegExp('\\b('+ //début de mot
+//~ var reMatchWord=new RegExp('\\b('+ //début de mot
+var reMatchWord=new RegExp('[^'+ wcharset + ']?' + '('+ //début de mot
       '('+verb_avoir.join('|')+')' + '[ ]+' + '(('+mot_negation.join('|')+')[ ]+)?'+'['+ wcharset + ']{2,}'+ '|' + // les mots/verbes conjugués avec avoir pour ne pas y toucher
       '('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')' + '[ ]+' +'['+ wcharset + ']{2,}'+ '|' + // les noms précédés de pronoms
       '['+ wcharset + ']['+ wcharset + wbindset + ']+' + ')' +  // n'importe quel mot (incluant les charactères d'union)
@@ -99,14 +101,19 @@ var reMatchWord=new RegExp('\\b('+ //début de mot
 //Fonction qui remplace un mot par un autre en utilisant la fonction matchCase
 function swapWord(word) {
   //~ return '^'+word+'$'; // uncomment this to debug the regex in genderswap (reMatchWord)
+  var pre="";
   var suf="";
+  if (reFirstcharNotInWord.test(word)){
+      pre=word.substring(0,1);
+      word=word.substring(1,word.length);
+  }
   if (reLastcharNotInWord.test(word)){
       suf=word.substring(word.length - 1,word.length);
       word=word.substring(0,word.length - 1);
   }
   var t=word.split(' ');
   if (reModAvoir.test(t[0])){
-    return bracket_nosw[0] + word + bracket_nosw[1] + suf;
+    return pre + bracket_nosw[0] + word + bracket_nosw[1] + suf;
   }
   if (t.length > 1){ //gère les mots inscrits comme cas particuliers et les pronoms sur deux mots
     var rep=[];
@@ -140,9 +147,9 @@ function swapWord(word) {
       rep[t.length-1]=t[t.length-1].toLowerCase().replace(searchFor, findMatch);
       rep_ok=true;
     }
-    if ( rep_ok ) return matchCase(word, rep.join(' ')) + suf;
+    if ( rep_ok ) return pre + matchCase(word, rep.join(' ')) + suf;
   }
-  return matchCase(word, word.toLowerCase().replace(searchFor, findMatch))+ suf;
+  return pre + matchCase(word, word.toLowerCase().replace(searchFor, findMatch))+ suf;
 }
 
 function genderswap(text) {

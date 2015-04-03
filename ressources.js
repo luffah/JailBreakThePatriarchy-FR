@@ -2189,6 +2189,8 @@ var correspondance=[
 ["les","les",""],
 ["tous","toutes",""],
 ["tout","toute",""],
+["égal","égale",""],
+["égaux","égales",""],
 ["humain","humaine","s"],
 ["lui-même","elle-même",""],
 ["eux-même","elles-même",""],
