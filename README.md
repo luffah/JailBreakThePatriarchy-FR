@@ -1,10 +1,27 @@
 #
 JailBreakThePatriarchy-FR est un fourchette (version) française de JailBreak The Patriarchy.
 
-Installation
+Installation (Français)
 --------------------------------------------------------------------------------------------------------------
-For Chromium / Chrome :
-Just load this directory, with the developer mode in chrome://extensions/   
+* Pour chrome en chrome: // extensions /:
+Télécharger JailBreakThePatriarchy-FR.crx et faites-le glisser dans l'onglet chrome: // extensions /
+ou bien
+(mode développeur) Télécharger la source et de charger le répertoire JailBreakThePatriarchy-FR.
+
+* Pour Firefox (<38):
+Télécharger jailbreakthepatriarchy-fr.xpi et ouvrez-le avec Firefox (double-clic)
+
+
+Installation (Anglais)
+--------------------------------------------------------------------------------------------------------------
+* For Chromium in chrome://extensions/:
+Download JailBreakThePatriarchy-FR.crx and drag it in the tab chrome://extensions/
+or
+(developer mode) Download the source and load the directory JailBreakThePatriarchy-FR.
+
+* For Firefox (<38) :
+Download jailbreakthepatriarchy-fr.xpi and open it with Firefox (double-click)
+
 
 Note
 --------------------------------------------------------------------------------------------------------------
