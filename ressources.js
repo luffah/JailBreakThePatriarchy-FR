@@ -2,6 +2,11 @@
 //  -> map : any words or n-gram which can be directly remplaced 
 //  -> map_singulier : any words (singular - after 'le', 'la', 'un'..) which are particular cases
 //  -> map_pluriel : any words (pluriel - after 'les', 'des'..) which are particular cases
+//   > wcharset et wbinset : Définition des caractères pouvant être présent dans un mot
+//   > verb_avoir : Définition des modaux qui empèche la conjugaison
+//   > mot_negation : mots suivants le modal dans une négation
+//   > pronoms_singulier : Définition des pronoms au singulier
+//   > pronoms_pluriel : Définition des pronoms au pluriel
 
 // Date : 2015/04/01
 // This code is originaly a fork of JailBreak The Patriarchy
@@ -2222,10 +2227,10 @@ for(var i=0; i<correspondance.length; i++)
     complete[correspondance[i][1]+correspondance[i][2]]=correspondance[i][0]+correspondance[i][2]
   }
 }
+var map = complete;
 
 var map_singulier={};
 var map_pluriel={};
-
 for(var i=0; i<correspondance_singulier.length; i++)
 {
   map_singulier[correspondance_singulier[i][0]]=correspondance_singulier[i][1];
@@ -2237,5 +2242,19 @@ for(var i=0; i<correspondance_pluriel.length; i++)
   map_pluriel[correspondance_pluriel[i][1]]=correspondance_pluriel[i][0];
 }
 
-//Variables
-var map = complete;
+// Définition des caractères pouvant être présent dans un mot
+var wcharset="a-zçâêîôûäëïöüéèà";//lettres
+var wbindset="'-";//apostrophe et trait d'union ; jamais présents en début de mot
+
+// Définition des modaux qui empèche la conjugaison
+var verb_avoir  =['a','ont','eu','ai','as','avez','avons','avait','avaient','avais'];
+var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
+
+// Définition des pronoms au singulier
+var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur'];
+// Définition des pronoms au pluriel
+var pronoms_pluriel  =['des','les','ses','vos','leurs'];
+
+
+
+

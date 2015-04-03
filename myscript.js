@@ -1,7 +1,12 @@
-// see ressources.js for the hash tables
+// see ressources.js for the lexical variables
 //  -> map : any words or n-gram which can be directly remplaced 
 //  -> map_singulier : any words (singular - after 'le', 'la', 'un'..) which are particular cases
 //  -> map_pluriel : any words (pluriel - after 'les', 'des'..) which are particular cases
+//   > wcharset et wbinset : Définition des caractères pouvant être présent dans un mot
+//   > verb_avoir : Définition des modaux qui empèche la conjugaison
+//   > mot_negation : mots suivants le modal dans une négation
+//   > pronoms_singulier : Définition des pronoms au singulier
+//   > pronoms_pluriel : Définition des pronoms au pluriel
 
 // Date : 2015/04/01
 // This code is originaly a fork of JailBreak The Patriarchy
@@ -33,11 +38,6 @@ var concatString = function(obj) {
   }
   return parts.join('|');
 };
-
-// Définition des critères de modification des mots -> si le mot est connu du dictionnaire
-var searchFor = new RegExp('^('+ concatString(map) + ')$', 'ig');
-var searchForSingulier = new RegExp('^('+ concatString(map_singulier) + ')$', 'ig');
-var searchForPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'ig');
 
 //Fonction qui gere la casse des mots dans un n-gramme
 function matchCase(old_word, replacement) {
@@ -79,21 +79,38 @@ function findMatchPluriel(word) {
 
 //~ A faire ? -> var dernier_genre; // détection du genre changé pour déterminer la substitution suivante dans la phrase
 
+// Définition des critères de modification des mots -> si le mot est connu du dictionnaire
+var searchFor = new RegExp('^('+ concatString(map) + ')$', 'ig');
+var searchForSingulier = new RegExp('^('+ concatString(map_singulier) + ')$', 'ig');
+var searchForPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'ig');
+
+var reLastcharNotInWord=new RegExp('[^'+wcharset+']$','i');
+var reModAvoir=new RegExp('^('+verb_avoir.join('|')+')$','');
+var rePronomsSingulier=new RegExp('^('+pronoms_singulier.join('|')+')$','i');
+var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
+
+// Définition du format des mots à traiter
+var reMatchWord=new RegExp('\\b('+ //début de mot
+      '('+verb_avoir.join('|')+')' + '[ ]+' + '(('+mot_negation.join('|')+')[ ]+)?'+'['+ wcharset + ']{2,}'+ '|' + // les mots/verbes conjugués avec avoir pour ne pas y toucher
+      '('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')' + '[ ]+' +'['+ wcharset + ']{2,}'+ '|' + // les noms précédés de pronoms
+      '['+ wcharset + ']['+ wcharset + wbindset + ']+' + ')' +  // n'importe quel mot (incluant les charactères d'union)
+      '[^'+ wcharset + ']?', 'ig'); //fin de mot (on détecte n'importe quel caractère qui ne doit pas appartenir aux mots) 
+
 //Fonction qui remplace un mot par un autre en utilisant la fonction matchCase
 function swapWord(word) {
-  //~ return '^'+word+'$'; // uncomment this to debug the regex in genderswap 
+  //~ return '^'+word+'$'; // uncomment this to debug the regex in genderswap (reMatchWord)
   var suf="";
 
-  if (/[^0-9_a-zâêîôûäëïöüéèà]$/ig.test(word)){
+  if (reLastcharNotInWord.test(word)){
       suf=word.substring(word.length - 1,word.length);
       word=word.substring(0,word.length - 1);
   }
   var t=word.split(' ');
-  if (/^(a|ont|eu|ai|as|avez|avons|avait|avaient|avais)$/.test(t[0])){
+  if (reModAvoir.test(t[0])){
     return bracket_nosw[0] + word + bracket_nosw[1] + suf;
   }
   if (t.length == 2){ //gère les mots inscrits comme cas particuliers
-    if (/^(un|une|le|la|son|sa|votre|leur)$/i.test(t[0])){
+    if (rePronomsSingulier.test(t[0])){
       if (searchForSingulier.test(t[1])){
           return matchCase(word,
                           t[0].toLowerCase().replace(searchFor, findMatch) +
@@ -103,7 +120,7 @@ function swapWord(word) {
                           t[0].toLowerCase().replace(searchFor, findMatch) +
                           ' ' + t[1].toLowerCase().replace(searchFor, findMatch)) + suf;
       }
-    } else if (/^(des|les|ses|vos|leurs)$/i.test(t[0])){
+    } else if (rePronomsPluriel.test(t[0])){
       if (searchForPluriel.test(t[1])){
           return matchCase(word,
                           t[0] + ' '
@@ -119,11 +136,10 @@ function swapWord(word) {
 }
 
 function genderswap(text) {
-  return text
-     .replace(/\b((a|ont|eu|ai|as|avez|avons|avait|avaient|avais)[ ](pas[ ])?[a-zâêîôûäëïöüéèà][a-zâêîôûäëïöüéèà]+|(le|la|les|un|une|des|sa|son|ses|vos|votre)[ ]+[a-zâêîôûäëïöüéèà][a-zâêîôûäëïöüéèà]+|[a-zâêîôûäëïöüéèà][a-zâêîôûäëïöüéèà\']+)[^0-9_a-zâêîôûäëïöüéèà]?/gi, swapWord)
+  return text.replace(reMatchWord, swapWord);
 }
 
-// Fonction de recherche des mots pour les traduire (= genderswap();)
+// Fonction de recherche et traitement des blocks de texte à transformer 
 function jailbreak(node,options_hash){
   var treeWalker = document.createTreeWalker(
      node,
@@ -133,7 +149,7 @@ function jailbreak(node,options_hash){
   );
   while(treeWalker.nextNode()) {
    var current = treeWalker.currentNode;
-   current.textContent = genderswap(current.textContent);
+   current.textContent = genderswap(current.textContent); // appel à la fonction de transformation
   }
   post_processing_innerHTML(node,options_hash);
 }
