@@ -3,25 +3,33 @@ JailBreakThePatriarchy-FR est un fourchette (version) française de JailBreak Th
 
 Installation (Français)
 --------------------------------------------------------------------------------------------------------------
-* Pour chrome en chrome: // extensions /:
-Télécharger JailBreakThePatriarchy-FR.crx et faites-le glisser dans l'onglet chrome: // extensions /
-ou bien
-(mode développeur) Télécharger la source et de charger le répertoire JailBreakThePatriarchy-FR.
+**Pour Firefox (<38):**<br>
+Télécharger 'jailbreakthepatriarchy-fr.xpi' et ouvrez-le avec Firefox (double-clic).<br>
+<br>
+**Pour Chromium ou Chrome :**<br>
+Télécharger 'JailBreakThePatriarchy-FR.crx'.<br>
+Aller dans l'onglet 'chrome://extensions/'.<br>
+Glisser-déposer le fichier dans l'onglet.<br>
 
-* Pour Firefox (<38):
-Télécharger jailbreakthepatriarchy-fr.xpi et ouvrez-le avec Firefox (double-clic)
+**Pour Chromium ou Chrome en mode développeur:** <br>
+Récuperer le répertoire source en zip ou  via avec SVN ou GIT.<br>
+Aller dans l'onglet 'chrome://extensions/', cocher "Mode développeur".<br>
+Avec "Charger l'extension non empactée..." charger le sous-répertoire JailBreakThePatriarchy-FR.<br>
 
-
-Installation (Anglais)
+Installation (English)
 --------------------------------------------------------------------------------------------------------------
-* For Chromium in chrome://extensions/:
-Download JailBreakThePatriarchy-FR.crx and drag it in the tab chrome://extensions/
-or
-(developer mode) Download the source and load the directory JailBreakThePatriarchy-FR.
+** For Firefox (<38): ** <br>
+Download 'jailbreakthepatriarchy-fr.xpi' and open it with Firefox (double-click). <br>
+<br>
+** For Chromium or Chrome ** <br>
+Download 'JailBreakThePatriarchy-FR.crx'.<br>
+Go to the tab 'chrome://extensions/'.<br>
+Drag and drop the file in the tab. <br>
 
-* For Firefox (<38) :
-Download jailbreakthepatriarchy-fr.xpi and open it with Firefox (double-click)
-
+** For Chromium or Chrome in developer mode: ** <br>
+Recover the source directory in zip or via SVN or GIT with. <br>
+Go to the tab 'chrome://extensions/", check "developer mode"<br>.
+With "Load non-packaged extension..."  load JailBreakThePatriarchy-FR subdirectory.<br>
 
 Note
 --------------------------------------------------------------------------------------------------------------
