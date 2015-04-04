@@ -18,15 +18,15 @@ Avec "Charger l'extension non empactée..." charger le sous-répertoire JailBrea
 
 Installation (English)
 --------------------------------------------------------------------------------------------------------------
-** For Firefox (<38): ** <br>
+**For Firefox (<38):** <br>
 Download 'jailbreakthepatriarchy-fr.xpi' and open it with Firefox (double-click). <br>
 <br>
-** For Chromium or Chrome ** <br>
+**For Chromium or Chrome** <br>
 Download 'JailBreakThePatriarchy-FR.crx'.<br>
 Go to the tab 'chrome://extensions/'.<br>
 Drag and drop the file in the tab. <br>
 
-** For Chromium or Chrome in developer mode: ** <br>
+**For Chromium or Chrome in developer mode:** <br>
 Recover the source directory in zip or via SVN or GIT with. <br>
 Go to the tab 'chrome://extensions/", check "developer mode"<br>.
 With "Load non-packaged extension..."  load JailBreakThePatriarchy-FR subdirectory.<br>
