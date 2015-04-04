@@ -6,6 +6,18 @@ Installation (Français)
 **Pour Firefox (<38):**<br>
 Télécharger 'jailbreakthepatriarchy-fr.xpi' et ouvrez-le avec Firefox (double-clic).<br>
 <br>
+**Pour Firefox (<38) en mode développeur:**<br>
+Récuperer le répertoire source en zip ou  via avec SVN ou GIT.<br>
+Récupérer le kit de developpement pour Firefox (version en cours d'obsolescence) :
+https://developer.mozilla.org/en-US/Add-ons/SDK <br>
+Puis en ligne de commande (linux):
+```
+cd ${HOME}/Code/addon-sdk-1.17/
+source bin/activate
+cd <chemin-vers-le-code-source>/JailBreakThePatriarchy-FR
+cfx run
+```
+
 **Pour Chromium ou Chrome :**<br>
 Télécharger 'JailBreakThePatriarchy-FR.crx'.<br>
 Aller dans l'onglet 'chrome://extensions/'.<br>
@@ -14,7 +26,7 @@ Glisser-déposer le fichier dans l'onglet.<br>
 **Pour Chromium ou Chrome en mode développeur:** <br>
 Récuperer le répertoire source en zip ou  via avec SVN ou GIT.<br>
 Aller dans l'onglet 'chrome://extensions/', cocher "Mode développeur".<br>
-Avec "Charger l'extension non empactée..." charger le sous-répertoire JailBreakThePatriarchy-FR.<br>
+Avec "Charger l'extension non empactée..." charger le sous-répertoire "JailBreakThePatriarchy-FR".<br>
 
 Installation (English)
 --------------------------------------------------------------------------------------------------------------
@@ -30,6 +42,29 @@ Drag and drop the file in the tab. <br>
 Recover the source directory in zip or via SVN or GIT with. <br>
 Go to the tab 'chrome://extensions/", check "developer mode"<br>.
 With "Load non-packaged extension..."  load JailBreakThePatriarchy-FR subdirectory.<br>
+
+Fichiers / Files
+--------------------------------------------------------------------------------------------------------------
+|Fichiers | Description |
+| :---| :---|
+|./background.html | La page de background qui permet de réaliser des opérations en arrière plan, indépendammant des pages ouvertes. Contient des listeners pour les options avancées. |
+|./options.html | La page offrant une interface utilisateur avec les options. |
+|./data| Dossier contenant les images |
+|./lib| Dossier contenant les scripts de traitement |
+|./lib/myscript.js| Script principal contenant la fonction JailBreak(node=document.body,options=voir option.js) |
+|./lib/options.js| Script de chargement des options, permet aussi de modifier options si il est chargé par options.html |
+|./lib/ressources.js| Définition des lexiques utilisés par myscript.js |
+
+|Fichiers pour Firefox | Description |
+| :---| :---|
+|./lib/main.js| Script d'intégration de l'extension |
+|./package.json| Fichier de définition de l'extension (utilisé par l'outil cfx) |
+
+|Fichiers pour Chromium (ou Chrome) | Description |
+| :---| :---|
+|./chromium/button.js| Script d'intégration de l'extension |
+|./chromium/background.js| |
+|./manifest.json| Fichier de définition de l'extension (utilisé au moment de charger l'extension) |
 
 Note
 --------------------------------------------------------------------------------------------------------------
