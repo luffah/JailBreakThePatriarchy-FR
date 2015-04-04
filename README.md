@@ -63,7 +63,7 @@ Fichiers / Files
 |Fichiers pour Chromium (ou Chrome) | Description |
 | :---| :---|
 |./chromium/button.js| Script d'intégration de l'extension |
-|./chromium/background.js| |
+|./chromium/background.js| Script pour les opérations à réaliser au chargement du navigateur ou en arrière-plan (avec des _listeners_)|
 |./manifest.json| Fichier de définition de l'extension (utilisé au moment de charger l'extension) |
 
 Note
