@@ -12,7 +12,7 @@ Récupérer le kit de developpement pour Firefox (version en cours d'obsolescenc
 https://developer.mozilla.org/en-US/Add-ons/SDK <br>
 Puis en ligne de commande (linux):
 ```
-cd ${HOME}/Code/addon-sdk-1.17/
+cd <chemin-vers-le-sdk>/addon-sdk-1.17/
 source bin/activate
 cd <chemin-vers-le-code-source>/JailBreakThePatriarchy-FR
 cfx run
