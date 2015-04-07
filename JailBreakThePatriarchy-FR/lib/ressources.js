@@ -2251,7 +2251,7 @@ for(var i=0; i<correspondance_pluriel.length; i++)
 }
 
 // Définition des caractères pouvant être présent dans un mot
-var wcharset="a-zçâêîôûäëïöüéèà";//lettres
+var wcharset="a-zçâêîôûœäëïöüéèà";//lettres
 var wbindset="'-";//apostrophe et trait d'union ; jamais présents en début de mot
 
 // Définition des modaux qui empèche la conjugaison
