@@ -990,7 +990,7 @@ var complete = {
   'déguisé': 'déguisée', 'déguisée': 'déguisé','déguisés': 'déguisées', 'déguisées': 'déguisés',
   'dégusté': 'dégustée', 'dégustée': 'dégusté','dégustés': 'dégustées', 'dégustées': 'dégustés',
   'déjoué': 'déjouée', 'déjouée': 'déjoué','déjoués': 'déjouées', 'déjouées': 'déjoués',
-/*M*/'de la': 'du', 'du': 'de la',
+  'de la': 'du', 'du': 'de la',
   'délaissé': 'délaissée', 'délaissée': 'délaissé','délaissés': 'délaissées', 'délaissées': 'délaissés',
   'délavé': 'délavée', 'délavée': 'délavé','délavés': 'délavées', 'délavées': 'délavés',
   'délégué': 'déléguée', 'déléguée': 'délégué','delegué': 'deleguée', 'deleguée': 'delegué','délégués': 'déléguées', 'déléguées': 'délégués','delegués': 'deleguées', 'deleguées': 'delegués',
@@ -2198,7 +2198,7 @@ var correspondance=[
 ["qu'il","qu'elle","s"],
 ["doué","douée","s"],
 ["vertébré","vertébrée","s"],
-["l'homme","la femme",""],
+["de l'homme","de la femme",""],
 ["homme","femme","s"],
 ["la reconnaissance","le gré","s"],
 ["résolu","résolue","s"],
@@ -2215,7 +2215,7 @@ var correspondance=[
 //~ ["le droit","la loi",""],
 ["un régime","des prescriptions",""],
 ["régime","organisation","s"],
-["proclamé","proclamée","s"]
+["proclamé","proclamée","s"],
 ]
 
 var correspondance_singulier=[
@@ -2259,12 +2259,14 @@ var verb_avoir  =['a','ont','eu','ai','as','avez','avons','avait','avaient','ava
 var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
 
 // Définition des pronoms au singulier
-var pronoms_singulier  =['un','une','le','la','son','sa','votre','leur',
+var pronoms_singulier  =['de la','du','d\'une','d\'autre','d\'un','un','une','le','la','son','sa','votre','leur',
                           'toute autre','tout autre',
                           'tout le', 'toute la', 'tout un', 'toute une'];
+var pronoms_l_apo  = ["l'"];
 // Définition des pronoms au pluriel
-var pronoms_pluriel  =['des','les','ses','vos','leurs','toutes les', 'tous les'];
+var pronoms_pluriel  =['d\'autres','des','les','ses','vos','leurs','toutes les', 'tous les'];
 
-
+// Permet de gérer la mise en gras (décompte des mots) lorsqu'un groupe de mot est remplacé par un seul mot
+var mot_fantom = '¤';
 
 
