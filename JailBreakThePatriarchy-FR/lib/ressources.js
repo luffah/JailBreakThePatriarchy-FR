@@ -2198,7 +2198,7 @@ var correspondance=[
 ["qu'il","qu'elle","s"],
 ["doué","douée","s"],
 ["vertébré","vertébrée","s"],
-["de l'homme","de la femme",""],
+["l'homme","la femme",""],
 ["homme","femme","s"],
 ["la reconnaissance","le gré","s"],
 ["résolu","résolue","s"],
@@ -2255,13 +2255,14 @@ var wcharset="a-zçâêîôûœäëïöüéèà";//lettres
 var wbindset="'-";//apostrophe et trait d'union ; jamais présents en début de mot
 
 // Définition des modaux qui empèche la conjugaison
-var verb_avoir  =['a','ont','eu','ai','as','avez','avons','avait','avaient','avais'];
+var verb_avoir  =['n\'ai','n\'avons','n\'avez','a','ont','eu','ai','as','avez','avons','avait','avaient','avais'];
 var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
 
 // Définition des pronoms au singulier
 var pronoms_singulier  =['de la','du','d\'une','d\'autre','d\'un','un','une','le','la','son','sa','votre','leur',
                           'toute autre','tout autre',
-                          'tout le', 'toute la', 'tout un', 'toute une'];
+                          'tout le', 'toute la', 'tout un', 'toute une','de'];
+var prepronom=['de'];                          
 var pronoms_l_apo  = ["l'"];
 // Définition des pronoms au pluriel
 var pronoms_pluriel  =['d\'autres','des','les','ses','vos','leurs','toutes les', 'tous les'];

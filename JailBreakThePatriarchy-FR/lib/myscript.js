@@ -59,6 +59,7 @@ var reLowerCase=new RegExp('['+wcharset.toLowerCase()+']$','');
 var reUpperCase=new RegExp('['+wcharset.toUpperCase()+']$','');
 //Fonction qui gere la casse des mots dans un n-gramme
 function matchCase(old_word, replacement) {
+  //~ return replacement;
   var first = new String();
   var second = new String();
   var ret;
@@ -79,7 +80,7 @@ function matchCase(old_word, replacement) {
       tmp_replacement=tmp_replacement.replace(wbindset[i],' ');
       tmp_old_word=tmp_old_word.replace(wbindset[i],' ');
     }
-    //~ console.log("=replace="+tmp_old_word+"->"+tmp_replacement);
+    console.log("=replace="+tmp_old_word+"->"+tmp_replacement);
   }
   
   var t_old_word = tmp_old_word.split(' ');
@@ -138,6 +139,8 @@ var reFirstcharNotInWord=new RegExp('^[^'+wcharset+']','i');
 var reModAvoir=new RegExp('^('+verb_avoir.join('|')+')$','');
 var rePronomsSingulier=new RegExp('^('+pronoms_singulier.join('|')+')$','i');
 var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
+var rePreprepronom= new RegExp('^('+prepronom.join('|')+')$','i');
+
 
 // Définition du format des mots à traiter
 //~ var reMatchWord=new RegExp('\\b('+ //début de mot
@@ -175,16 +178,30 @@ function swapWord(word) {
   if (t.length > 1){ //gère les mots inscrits comme cas particuliers et les pronoms sur deux mots
     var rep=[];
     var tmp_txt;
-    var rep_ok=false;
-    var rep_singulier=false;
-    var rep_pluriel=false;
-    var rep_alt=false;
-    
+    var rep_ok=false;// substitution trouvée
+    var rep_singulier=false;// test si c'est un cas particulier au singulier
+    var rep_pluriel=false;// test si c'est un cas particulier au pluriel
+    var rep_alt=false;// le nom ne fait pas partie des cas particulier
+
+    if (rePreprepronom.test(t[0])){// si "de ..."
+        if (t.length > 2){ // découpage "de - la femme"
+          tmp_txt=t[1] + " " + t[2]; 
+        } else {// découpage "de - l'homme"
+          tmp_txt=t[1];
+        }
+        if (reDico.test(tmp_txt)) {
+            rep[0]=t[0];
+            rep[1]=findMatch(tmp_txt);
+            rep_ok=true;
+        }
+    }
+    if ( rep_ok ) return pre + matchCase(word, rep.join(' ')) + suf;  
     if (t.length > 2){// cas "de la" <-> "du" 
       tmp_txt=t[0] + " " + t[1]; 
       if (rePronomsSingulier.test(tmp_txt)) rep_singulier=true;
       else if (rePronomsPluriel.test(tmp_txt)) rep_pluriel=true;
-      if (reDico.test(tmp_txt)) { 
+      
+      if (reDico.test(tmp_txt)) {
         rep[0]=findMatch(tmp_txt);
         rep[1]=mot_fantom;
       } else {
@@ -196,7 +213,6 @@ function swapWord(word) {
       if (rePronomsSingulier.test(t[0])) rep_singulier=true;
       else if (rePronomsPluriel.test(t[0])) rep_pluriel=true;
     }
-
     if (rep_singulier){
       if (reDicoSingulier.test(t[t.length-1])){
         rep[t.length-1]=findMatchSingulier(t[t.length-1]);
