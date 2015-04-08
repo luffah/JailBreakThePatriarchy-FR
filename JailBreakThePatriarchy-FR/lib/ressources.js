@@ -2232,7 +2232,16 @@ var correspondance=[
 ["un régime","des prescriptions",""],
 ["un régime","une organisation",""],
 ["le sein","la poitrine",""],
-["proclamé","proclamée","s"]
+["proclamé","proclamée","s"],
+["membre","membre","s"]
+]
+
+var correspondance_sujet=[
+["contre elles","contre eux"],
+["contre elle","contre lui"],
+["pour elle","pour lui"],
+["d'elle","de lui"],
+["elles","ils"]
 ]
 
 var correspondance_singulier=[
@@ -2242,30 +2251,31 @@ var correspondance_pluriel=[
 ["fils","filles"]
 ]
 
-for(var i=0; i<correspondance.length; i++)
-{
-  complete[correspondance[i][0]]=correspondance[i][1]
-  complete[correspondance[i][1]]=correspondance[i][0]
-  if (correspondance[i][2].length > 0) {
-    complete[correspondance[i][0]+correspondance[i][2]]=correspondance[i][1]+correspondance[i][2]
-    complete[correspondance[i][1]+correspondance[i][2]]=correspondance[i][0]+correspondance[i][2]
+function fill_switch_map(h_tab,t_switch){
+  for(var i=0; i<t_switch.length; i++){
+    h_tab[t_switch[i][0]]=t_switch[i][1]
+    h_tab[t_switch[i][1]]=t_switch[i][0]
+    if ((t_switch[i].length > 2) && (t_switch[i][2].length > 0)) {
+      h_tab[t_switch[i][0]+t_switch[i][2]]=t_switch[i][1]+t_switch[i][2]
+      h_tab[t_switch[i][1]+t_switch[i][2]]=t_switch[i][0]+t_switch[i][2]
+    }
+  }
+}
+function flatten_switch_map(h_tab,t_switch){
+  for(var i=0; i<t_switch.length; i++){
+    t_switch[i].join('|');
   }
 }
 
 var map = complete;
-
+var map_sujet={};
 var map_singulier={};
 var map_pluriel={};
-for(var i=0; i<correspondance_singulier.length; i++)
-{
-  map_singulier[correspondance_singulier[i][0]]=correspondance_singulier[i][1];
-  map_singulier[correspondance_singulier[i][1]]=correspondance_singulier[i][0];
-}
-for(var i=0; i<correspondance_pluriel.length; i++)
-{
-  map_pluriel[correspondance_pluriel[i][0]]=correspondance_pluriel[i][1];
-  map_pluriel[correspondance_pluriel[i][1]]=correspondance_pluriel[i][0];
-}
+fill_switch_map(map,correspondance);
+fill_switch_map(map,correspondance_sujet);
+fill_switch_map(map_sujet,correspondance_sujet);
+fill_switch_map(map_singulier,correspondance_singulier);
+fill_switch_map(map_pluriel,correspondance_pluriel);
 
 // Définition des caractères pouvant être présent dans un mot
 var wcharset="a-zçâêîôûœäëïöüéèà";//lettres
@@ -2279,8 +2289,8 @@ var mot_negation=['pas','jamais'];//mots suivants le modal dans une négation
 var pronoms_singulier  =['de la','du','d\'une','d\'autre','d\'un','un','une','le','la','son','sa','votre','leur',
                           'toute autre','tout autre',
                           'tout le', 'toute la', 'tout un', 'toute une','de'];
-var prepronom=['de'];                          
-var pronoms_l_apo  = ["l'"];
+var prepositions=['de','contre','pour'];                       
+var pronoms_l_apo  = ["l'","d'"];
 // Définition des pronoms au pluriel
 var pronoms_pluriel  =['d\'autres','des','les','ses','vos','leurs','toutes les', 'tous les'];
 

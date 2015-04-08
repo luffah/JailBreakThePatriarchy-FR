@@ -37,15 +37,27 @@ function pre_processing_text(text){
 
 // Permet de définir un à un les caractères dans un mot
 String.prototype.setCharAt = function(idx, chr) {
-if(idx > this.length - 1){
-return this.toString();
-} else {
-return this.substr(0, idx) + chr + this.substr(idx + 1);
-}
+  if(idx > this.length - 1){
+    return this.toString();
+  } else {
+    return this.substr(0, idx) + chr + this.substr(idx + 1);
+  }
+};
+String.prototype.getCharIndexes = function(charlist) {
+  var idx;
+  var l_indexes=[];
+  for(var i=0; i<charlist.length; i++){
+    idx = this.indexOf(charlist[i], idx + 1);
+    while (idx != -1) {
+      l_indexes.push([idx,charlist[i]]);
+      idx = this.indexOf(charlist[i], idx + 1);
+    }
+  }
+  return l_indexes;
 };
 
 //Récupère les mots clés du dictionnaire dans le format Regex
-var concatString = function(obj) {
+function concatString(obj) {
   var parts = [];
   for (key in obj) {
     parts.push(key);
@@ -57,58 +69,44 @@ var concatString = function(obj) {
 var reBindSet=new RegExp('['+wbindset+']','ig');
 var reLowerCase=new RegExp('['+wcharset.toLowerCase()+']$','');
 var reUpperCase=new RegExp('['+wcharset.toUpperCase()+']$','');
+
 //Fonction qui gere la casse des mots dans un n-gramme
 function matchCase(old_word, replacement) {
-  //~ return replacement;
-  var first = new String();
-  var second = new String();
-  var ret;
-  var t_bindset = [];
-  var idx;
-  var tmp_old_word = old_word;
-  var tmp_replacement = replacement;
-  
   if (replacement.toLowerCase() == old_word.toLowerCase()) return old_word;
-  //Récupère les charactères de liaisons pour les ignorer
-  if (reBindSet.test(replacement)){
-    for(var i=0; i<wbindset.length; i++){
-      idx = replacement.indexOf(wbindset[i], idx + 1);
-      while (idx != -1) {
-        t_bindset.push([idx,wbindset[i]]);
-        idx = replacement.indexOf(wbindset[i], idx + 1);
-      }
-      tmp_replacement=tmp_replacement.replace(wbindset[i],' ');
-      tmp_old_word=tmp_old_word.replace(wbindset[i],' ');
-    }
-    console.log("=replace="+tmp_old_word+"->"+tmp_replacement);
-  }
   
-  var t_old_word = tmp_old_word.split(' ');
-  var t_replacement= tmp_replacement.split(' ');
+  var ret;//Variable resultat
+  var t_bindset =replacement.getCharIndexes(wbindset);//Récupère les caractères de liaisons pour les ignorer
+  replacement=replacement.replace(reBindSet,' ');// Suppression des caractères de liaisons
+  old_word=old_word.replace(reBindSet,' ');// Suppression des caractères de liaisons
 
+  //~ console.log("=matchCase="+old_word+"->"+replacement);
+
+  //On met tous les mots dans un tableau
+  var t_old_word = old_word.split(' ');
+  var t_replacement= replacement.split(' ');
   if (t_old_word.length != t_replacement.length){
-    return replacement;
+    //place autant de mots pour les deux groupes (on suppose que le dernier mot est suceptible d'etre en lettre capitale, donc on ajoute des mots fantomes avant les autres)
+    while (t_old_word.lengh > t_replacement.length) t_replacement.unshift(mot_fantom);
+    while (t_old_word.lengh < t_replacement.length) t_old_word.unshift(mot_fantom);
+
+    //~ return "!"+t_replacement.join(' ')+"!";// uncomment this to debug
   }
   for(var i=0; i<t_old_word.length; i++){
-    if (t_replacement[i].toLowerCase() != t_old_word[i].toLowerCase()){
-      first = t_old_word[i].charAt(0);
-      second = t_old_word[i].charAt(1);
-      
-      if (reLowerCase.test(first)){
+    if (t_replacement[i].toLowerCase() == t_old_word[i].toLowerCase()){
+        t_replacement[i]=t_old_word[i];
+    } else {
+      if (reLowerCase.test( t_old_word[i].charAt(0) )){
           t_replacement[i]=t_replacement[i].toLowerCase();
-      }
-      else {
-        if (reUpperCase.test(second)) ret=t_replacement[i].toUpperCase();
+      } else {
+        if (reUpperCase.test( t_old_word[i].charAt(1) )) ret=t_replacement[i].toUpperCase();
         else t_replacement[i]=t_replacement[i].charAt(0).toUpperCase() + t_replacement[i].slice(1).toLowerCase();;
       }
     }
   }
+  // Reconstuction de la chaine de charactères
   ret=t_replacement.join(' ');
-  
-  for(var i=0; i<t_bindset.length; i++){
-      //~ console.log( "var t_bindset[" + i + "]=" + t_bindset[i].join(',') );
+  for(var i=0; i<t_bindset.length; i++){// remet les caractères de liaisons
       ret=ret.setCharAt(t_bindset[i][0],t_bindset[i][1]);
-      //~ console.log("ret["+t_bindset[i][0]+"]="+t_bindset[i][1]+"->"+ret);
   }
   return bracket_sw[0] + ret.replace(' ' + mot_fantom +' ',' ') + bracket_sw[1];
 }
@@ -127,10 +125,6 @@ function findMatchPluriel(word) {
 //~ A faire ? -> var dernier_genre; // détection du genre changé pour déterminer la substitution suivante dans la phrase
 
 // Définition des critères de modification des mots -> si le mot est connu du dictionnaire
-var searchFor = new RegExp('^('+ concatString(map) + ')$', 'ig');
-var searchForSingulier = new RegExp('^('+ concatString(map_singulier) + ')$', 'ig');
-var searchForPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'ig');
-
 var reDico = new RegExp('^('+ concatString(map) + ')$', 'i');
 var reDicoSingulier = new RegExp('^('+ concatString(map_singulier) + ')$', 'i');
 var reDicoPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'i');
@@ -139,14 +133,13 @@ var reFirstcharNotInWord=new RegExp('^[^'+wcharset+']','i');
 var reModAvoir=new RegExp('^('+verb_avoir.join('|')+')$','');
 var rePronomsSingulier=new RegExp('^('+pronoms_singulier.join('|')+')$','i');
 var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
-var rePreprepronom= new RegExp('^('+prepronom.join('|')+')$','i');
-
+var rePrepositions= new RegExp('^('+prepositions.join('|')+')$','i');
 
 // Définition du format des mots à traiter
-//~ var reMatchWord=new RegExp('\\b('+ //début de mot
 var reMatchWord=new RegExp('[^'+ wcharset + wbindset + ']?' + '('+ //début de mot
-      '('+verb_avoir.join('|')+')' + '[ ]+' + '(('+mot_negation.join('|')+')[ ]+)?'+'['+ wcharset + ']{2,}'+ '|' + // les mots/verbes conjugués avec avoir pour ne pas y toucher
-      '('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')' + '[ ]+' +'['+ wcharset + ']{2,}'+ '|' + // les noms précédés de pronoms
+      '('+verb_avoir.join('|')+')' + '[ ]+' + '(('+mot_negation.join('|')+')[ ]+)?'+'['+ wcharset + wbindset + ']{2,}'+ '|' + // les mots/verbes conjugués avec avoir pour ne pas y toucher
+      '('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')' + '[ ]+' +'['+ wcharset + wbindset + ']{2,}'+ '|' + // les noms précédés de pronoms
+      '('+concatString(map_sujet)+ ')' + '|' + // sujets composé "de lui" "d'elle"...
       '('+pronoms_l_apo.join('|')+')' +'['+ wcharset + ']{2,}'+ '|' + // les noms précédés de l'
       '['+ wcharset + ']['+ wcharset + wbindset + ']+' + // n'importe quel mot (incluant les charactères d'union)
       ')' + '[^'+ wcharset + wbindset + ']?', 'ig'); //fin de mot (on détecte n'importe quel caractère qui ne doit pas appartenir aux mots) 
@@ -183,7 +176,7 @@ function swapWord(word) {
     var rep_pluriel=false;// test si c'est un cas particulier au pluriel
     var rep_alt=false;// le nom ne fait pas partie des cas particulier
 
-    if (rePreprepronom.test(t[0])){// si "de ..."
+    if (rePrepositions.test(t[0])){// si "de ..."
         if (t.length > 2){ // découpage "de - la femme"
           tmp_txt=t[1] + " " + t[2]; 
         } else {// découpage "de - l'homme"
@@ -205,11 +198,11 @@ function swapWord(word) {
         rep[0]=findMatch(tmp_txt);
         rep[1]=mot_fantom;
       } else {
-        rep[0]=t[0].replace(searchFor, findMatch);
-        rep[1]=t[1].replace(searchFor, findMatch);
+        rep[0]=t[0].replace(reDico, findMatch);
+        rep[1]=t[1].replace(reDico, findMatch);
       }
     } else {
-      rep[0]=t[0].replace(searchFor, findMatch);
+      rep[0]=t[0].replace(reDico, findMatch);
       if (rePronomsSingulier.test(t[0])) rep_singulier=true;
       else if (rePronomsPluriel.test(t[0])) rep_pluriel=true;
     }
