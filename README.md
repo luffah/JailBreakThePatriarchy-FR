@@ -72,11 +72,23 @@ Fichiers / Files
 |./chromium/background.js| Script pour les opérations à réaliser au chargement du navigateur ou en arrière-plan (avec des _listeners_)|
 |./manifest.json| Fichier de définition de l'extension (utilisé au moment de charger l'extension) |
 
+
+Liste des personnes ayant contribué au projet 
+--------------------------------------------------------------------------------------------------------------
+Danielle SUCHER - Version originale<br>
+Yoann LABONNE - Tests et remplissage du dictionnaire<br>
+Sébastien GILLOT - Code, ajout support des n-grammes, et éléments grammaticaux<br>
+
+
+Liste des évènements ayant présenté le projet
+--------------------------------------------------------------------------------------------------------------
+Bouillants #7  - http://www.bouillants.fr/<br> 
+
 Note
 --------------------------------------------------------------------------------------------------------------
-Aknowledging this program is a fork (even if i found the code was not the best), here the original README.
+Aknowledging this program is a fork (even if i found the code was not the best), here the original README.<br>
 
-Informations about English language does not apply.
+Informations about English language does not apply.<br>
 
 Original README
 --------------------------------------------------------------------------------------------------------------
@@ -105,8 +117,8 @@ Known issues:
 If you'd just like to use the extension, you can install it automatically:
 https://chrome.google.com/webstore/detail/fiidcfoaaciclafodoficaofidfencgd
 
+
 More information:
 http://www.daniellesucher.com/2011/11/jailbreak-the-patriarchy-my-first-chrome-extension/
 
 -------------------------------------------------------------------------------------------------------------------------
-
