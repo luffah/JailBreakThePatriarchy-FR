@@ -1,6 +1,6 @@
 #
 JailBreakThePatriarchy-FR est une extension pour les navigateurs web <i>Chrome</i> et <i>Firefox</i>.
-Il s'agit à l'origine de la version française de <strong>JailBreak The Patriarchy</strong> à laquelle
+Il s'agit à l'origine de la version françisée de <strong>JailBreak The Patriarchy</strong> à laquelle
 des options y ont été ajoutées, le code restructuré, et le dictionnaire revu pour traiter la langue française et ses spécificités.
 
 Les extensions <strong>Jail Break The Patriarchy</strong> et équivalentes, ont vocation à apporter une réflexion sur la place du genre féminin/masculin, dans notre langue et dans notre société. Ces extensions doivent donc être considérés comme des oeuvres d'art moderne. Même si les auteurs ont essayé de pousser le code selon leurs compétences respectives, ces extensions ne sont pas des utilitaires exploitant les règles du language de manière infaillible.
