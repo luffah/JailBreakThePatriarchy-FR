@@ -35,37 +35,6 @@ function pre_processing_text(text){
   return text.split('’').join('\'');
 }
 
-// Permet de définir un à un les caractères dans un mot
-String.prototype.setCharAt = function(idx, chr) {
-  if(idx > this.length - 1){
-    return this.toString();
-  } else {
-    return this.substr(0, idx) + chr + this.substr(idx + 1);
-  }
-};
-String.prototype.getCharIndexes = function(charlist) {
-  var idx;
-  var l_indexes=[];
-  for(var i=0; i<charlist.length; i++){
-    idx = this.indexOf(charlist[i], idx + 1);
-    while (idx != -1) {
-      l_indexes.push([idx,charlist[i]]);
-      idx = this.indexOf(charlist[i], idx + 1);
-    }
-  }
-  return l_indexes;
-};
-
-//Récupère les mots clés du dictionnaire dans le format Regex
-function concatString(obj) {
-  var parts = [];
-  for (key in obj) {
-    parts.push(key);
-  }
-  return parts.join('|');
-};
-
-
 var reBindSet=new RegExp('['+wbindset+']','ig');
 var reLowerCase=new RegExp('['+wcharset.toLowerCase()+']$','');
 var reUpperCase=new RegExp('['+wcharset.toUpperCase()+']$','');
@@ -111,17 +80,6 @@ function matchCase(old_word, replacement) {
   return bracket_sw[0] + ret.replace(' ' + mot_fantom +' ',' ') + bracket_sw[1];
 }
 
-//Fonction qui recherche un mot dans notre tableau de mots
-function findMatch(word) {
-  return map[word];
-}
-function findMatchSingulier(word) {
-  return map_singulier[word];
-}
-function findMatchPluriel(word) {
-  return map_pluriel[word];
-}
-
 //~ A faire ? -> var dernier_genre; // détection du genre changé pour déterminer la substitution suivante dans la phrase
 
 // Définition des critères de modification des mots -> si le mot est connu du dictionnaire
@@ -131,6 +89,7 @@ var reDicoPluriel = new RegExp('^('+ concatString(map_pluriel) + ')$', 'i');
 var reLastcharNotInWord=new RegExp('[^'+wcharset+']$','i');
 var reFirstcharNotInWord=new RegExp('^[^'+wcharset+']','i');
 var reModAvoir=new RegExp('^('+verb_avoir.join('|')+')$','');
+var rePronoms=new RegExp('^('+pronoms_singulier.join('|')+pronoms_pluriel.join('|')+')$','i');
 var rePronomsSingulier=new RegExp('^('+pronoms_singulier.join('|')+')$','i');
 var rePronomsPluriel=new RegExp('^('+pronoms_pluriel.join('|')+')$','i');
 var rePrepositions= new RegExp('^('+prepositions.join('|')+')$','i');
@@ -147,8 +106,10 @@ var reMatchWord=new RegExp('[^'+ wcharset + wbindset + ']?' + '('+ //début de m
 //Fonction qui remplace un mot par un autre en utilisant la fonction matchCase
 function swapWord(word) {
   //~ return '^'+word+'$'; // uncomment this to debug the regex in genderswap (reMatchWord)
+  //~ var debug=(/(une femme)/ig.test(word)); //debug au cas par cas
   var pre="";
   var suf="";
+  word=word.replace(/\s+/g," ");
   if (reFirstcharNotInWord.test(word)){
       pre=word.substring(0,1);
       word=word.substring(1,word.length);
@@ -175,8 +136,9 @@ function swapWord(word) {
     var rep_singulier=false;// test si c'est un cas particulier au singulier
     var rep_pluriel=false;// test si c'est un cas particulier au pluriel
     var rep_alt=false;// le nom ne fait pas partie des cas particulier
-
-    if (rePrepositions.test(t[0])){// si "de ..."
+    //~ if (debug) console.log("-"+word+"-("+t.length+" mots) : -"+t[0]+"-"+t[1]+"-...-"+t[t.length-1]+"-");
+    if (rePrepositions.test(t[0])){// cas "de ..."
+        //~ if (debug)  console.log("groupe preposition : "+ word);
         if (t.length > 2){ // découpage "de - la femme"
           tmp_txt=t[1] + " " + t[2]; 
         } else {// découpage "de - l'homme"
@@ -189,35 +151,40 @@ function swapWord(word) {
         }
     }
     if ( rep_ok ) return pre + matchCase(word, rep.join(' ')) + suf;  
-    if (t.length > 2){// cas "de la" <-> "du" 
+    if (t.length > 2){// cas "de la" (groupe pronom)<-> "du" 
       tmp_txt=t[0] + " " + t[1]; 
       if (rePronomsSingulier.test(tmp_txt)) rep_singulier=true;
       else if (rePronomsPluriel.test(tmp_txt)) rep_pluriel=true;
-      
-      if (reDico.test(tmp_txt)) {
+      //~ else if (debug)  console.log("pronom seul ? "+ word + " : -"+t[0]+'-');
+
+      if (reDico.test(tmp_txt)) {//cas " -> du"
+        //~ if (debug)  console.log("pronom composé dans -" + word + "- : -"+tmp_txt+'-');
         rep[0]=findMatch(tmp_txt);
         rep[1]=mot_fantom;
-      } else {
+      } else {//cas " de son -> de sa "
+        //~ if (debug)  console.log("pronoms en groupe dans  -" + word + "- : -"+tmp_txt+'-');
         rep[0]=t[0].replace(reDico, findMatch);
         rep[1]=t[1].replace(reDico, findMatch);
       }
-    } else {
+    } else {//cas en 2 parties " un - fils -> une - fille " 
       rep[0]=t[0].replace(reDico, findMatch);
       if (rePronomsSingulier.test(t[0])) rep_singulier=true;
       else if (rePronomsPluriel.test(t[0])) rep_pluriel=true;
     }
     if (rep_singulier){
+      //~ if (debug)  console.log("groupe singulier : "+ word);
       if (reDicoSingulier.test(t[t.length-1])){
         rep[t.length-1]=findMatchSingulier(t[t.length-1]);
         rep_ok=true;
       } else rep_alt=true;
     } else if (rep_pluriel){
+      //~ if (debug)  console.log("groupe pluriel : "+ word);
       if (reDicoPluriel.test(t[t.length-1])){
         rep[t.length-1]=findMatchPluriel(t[t.length-1]);
         rep_ok=true;
       } else rep_alt=true;
     }
-    if ( (rep_alt) && (reDico.test(t[t.length-1])) ){
+    if ( (rep_alt) && (reDico.test(t[t.length-1])) ){// on ne change le groupe (rep_ok) que si on trouve une traduction
       rep[t.length-1]=findMatch(t[t.length-1]);
       rep_ok=true;
     }

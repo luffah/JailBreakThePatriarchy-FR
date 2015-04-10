@@ -14,6 +14,61 @@
 //    Sébastien GILLOT <sebastien.gillot@runbox.com> -> grammar tricks and some words
 //    Yoann LABONNE <yoann.labonne@gmail.com> -> filling the dictionnary 
 
+
+// Fonctions
+
+// Permet de définir un à un les caractères dans un mot
+String.prototype.setCharAt = function(idx, chr) {
+  if(idx > this.length - 1){
+    return this.toString();
+  } else {
+    return this.substr(0, idx) + chr + this.substr(idx + 1);
+  }
+};
+
+String.prototype.getCharIndexes = function(charlist) {
+  var idx;
+  var l_indexes=[];
+  for(var i=0; i<charlist.length; i++){
+    idx = this.indexOf(charlist[i], idx + 1);
+    while (idx != -1) {
+      l_indexes.push([idx,charlist[i]]);
+      idx = this.indexOf(charlist[i], idx + 1);
+    }
+  }
+  return l_indexes;
+};
+
+//Récupère les mots clés du dictionnaire dans le format Regex
+function concatString(obj) {
+  var parts = [];
+  for (key in obj) {
+    parts.push(key);
+  }
+  return parts.join('|');
+};
+
+// Met les éléments de table de correspondances [[a,b],[d,e]...] dans le dictionnaire {a:b,b:a,d:e,e:d...}
+function fill_switch_map(h_tab,t){
+  for(var i=0; i<t.length; i++){
+    h_tab[t[i][0]]=t[i][1];
+    h_tab[t[i][1]]=t[i][0];
+    if ((t[i].length > 2) && (t[i][2].length > 0)) {
+      h_tab[t[i][0]+t[i][2]]=t[i][1]+t[i][2];
+      h_tab[t[i][1]+t[i][2]]=t[i][0]+t[i][2];
+    }
+  }
+}
+
+//
+function complete_current_faults(map,map_fault){
+  var re=new RegExp('('+concatString(map_fault)+')','ig');
+  for (key in map) {
+    if (re.test(key)) map[key.replace(re,function (ch) { return map_fault[ch]; })]=map[key];
+  }
+}
+
+// Variables - dictionnaire
 var complete = {
 	//Last Update : Line = 864
 	//Total Words : 17.122 Words
@@ -499,7 +554,6 @@ var complete = {
   'bavard': 'bavarde', 'bavarde': 'bavard', 'bavards': 'bavardes', 'bavardes': 'bavards',
   'bavarois': 'bavaroise', 'bavaroise': 'bavarois', 'bavaroises': 'bavarois',
   'bavé': 'bavée', 'bavée': 'bavé','bavés': 'bavées', 'bavées': 'bavés',
-  'beau-frère': 'belle-soeur', 'beau-frere': 'belle-soeur', 'beau-frère': 'belle-soeur',
   'beauceron': 'beauceronne', 'beauceronne': 'beauceron', 'beaucerons': 'beauceronnes', 'beauceronnes': 'beaucerons',
   'bédouin': 'bédouine', 'bédouine': 'bédouin', 'bédouins': 'bédouines', 'bédouines': 'bédouins',
   'belle-mère': 'beau-père', 'belle-mere': 'beau-pere',
@@ -2161,7 +2215,6 @@ var complete = {
   //'tyran': 'tyrannie', 'tyrannie': 'tyran', 'tyrans': 'tyrannies', 'tyrannies': 'tyrans',
   'tyrannisé': 'tyrannisée', 'tyrannisée': 'tyrannisé','tyrannisés': 'tyrannisées', 'tyrannisées': 'tyrannisés',
   // -U- 
-  //~ 'un': 'une', 'une': 'un','une': 'un', 'un': 'une', 
   'unifié': 'unifiée', 'unifiée': 'unifié','unifiés': 'unifiées', 'unifiées': 'unifiés',
   'uni': 'unie', 'unie': 'uni','unis': 'unies', 'unies': 'unis',
   'usé': 'usée', 'usée': 'usé','usés': 'usées', 'usées': 'usés',
@@ -2223,7 +2276,6 @@ var complete = {
 };   
           
 // =============================================================================
-
 var correspondance=[
 ["lui-même","elle-même",""],
 ["eux-même","elles-même",""],
@@ -2265,7 +2317,8 @@ var correspondance=[
 ["un régime","une organisation",""],
 ["le sein","la poitrine",""],
 ["proclamé","proclamée","s"],
-["membre","membre","s"]
+["membre","membre","s"],
+["un","une",'s']
 ]
 
 var correspondance_sujet=[
@@ -2289,32 +2342,6 @@ var correspondance_pluriel=[
 ["fils","filles"]
 ]
 
-function fill_switch_map(h_tab,t_switch){
-  for(var i=0; i<t_switch.length; i++){
-    h_tab[t_switch[i][0]]=t_switch[i][1]
-    h_tab[t_switch[i][1]]=t_switch[i][0]
-    if ((t_switch[i].length > 2) && (t_switch[i][2].length > 0)) {
-      h_tab[t_switch[i][0]+t_switch[i][2]]=t_switch[i][1]+t_switch[i][2]
-      h_tab[t_switch[i][1]+t_switch[i][2]]=t_switch[i][0]+t_switch[i][2]
-    }
-  }
-}
-function flatten_switch_map(h_tab,t_switch){
-  for(var i=0; i<t_switch.length; i++){
-    t_switch[i].join('|');
-  }
-}
-
-var map = complete;
-var map_sujet={};
-var map_singulier={};
-var map_pluriel={};
-fill_switch_map(map,correspondance);
-fill_switch_map(map,correspondance_sujet);
-fill_switch_map(map_sujet,correspondance_sujet);
-fill_switch_map(map_singulier,correspondance_singulier);
-fill_switch_map(map_pluriel,correspondance_pluriel);
-
 // Définition des caractères pouvant être présent dans un mot
 var wcharset="a-zçâêîôûœäëïöüéèà";//lettres
 var wbindset="'-";//apostrophe et trait d'union ; jamais présents en début de mot
@@ -2334,5 +2361,30 @@ var pronoms_pluriel  =['d\'autres','des','les','ses','vos','leurs','toutes les',
 
 // Permet de gérer la mise en gras (décompte des mots) lorsqu'un groupe de mot est remplacé par un seul mot
 var mot_fantom = '¤';
+
+// Pour les caractère qu'on a souvent peine à écrire
+var fautes_assumees_switch={'oe':'œ','œ':'oe'};
+
+var map = complete;
+var map_sujet={};
+var map_singulier={};
+var map_pluriel={};
+fill_switch_map(map,correspondance);
+fill_switch_map(map,correspondance_sujet);
+complete_current_faults(map,fautes_assumees_switch);
+fill_switch_map(map_sujet,correspondance_sujet);
+fill_switch_map(map_singulier,correspondance_singulier);
+fill_switch_map(map_pluriel,correspondance_pluriel);
+
+//Fonction qui recherche un mot dans notre tableau de mots
+function findMatch(word) {
+  return map[word];
+}
+function findMatchSingulier(word) {
+  return map_singulier[word];
+}
+function findMatchPluriel(word) {
+  return map_pluriel[word];
+}
 
 
