@@ -14,6 +14,63 @@
 //    Sébastien GILLOT <sebastien.gillot@runbox.com> -> grammar tricks and some words
 //    Yoann LABONNE <yoann.labonne@gmail.com> -> filling the dictionnary 
 
+<<<<<<< .mine
+
+// Fonctions
+
+// Permet de définir un à un les caractères dans un mot
+String.prototype.setCharAt = function(idx, chr) {
+  if(idx > this.length - 1){
+    return this.toString();
+  } else {
+    return this.substr(0, idx) + chr + this.substr(idx + 1);
+  }
+};
+
+String.prototype.getCharIndexes = function(charlist) {
+  var idx;
+  var l_indexes=[];
+  for(var i=0; i<charlist.length; i++){
+    idx = this.indexOf(charlist[i], idx + 1);
+    while (idx != -1) {
+      l_indexes.push([idx,charlist[i]]);
+      idx = this.indexOf(charlist[i], idx + 1);
+    }
+  }
+  return l_indexes;
+};
+
+//Récupère les mots clés du dictionnaire dans le format Regex
+function concatString(obj) {
+  var parts = [];
+  for (key in obj) {
+    parts.push(key);
+  }
+  return parts.join('|');
+};
+
+// Met les éléments de table de correspondances [[a,b],[d,e]...] dans le dictionnaire {a:b,b:a,d:e,e:d...}
+function fill_switch_map(h_tab,t){
+  for(var i=0; i<t.length; i++){
+    h_tab[t[i][0]]=t[i][1];
+    h_tab[t[i][1]]=t[i][0];
+    if ((t[i].length > 2) && (t[i][2].length > 0)) {
+      h_tab[t[i][0]+t[i][2]]=t[i][1]+t[i][2];
+      h_tab[t[i][1]+t[i][2]]=t[i][0]+t[i][2];
+    }
+  }
+}
+
+//
+function complete_current_faults(map,map_fault){
+  var re=new RegExp('('+concatString(map_fault)+')','ig');
+  for (key in map) {
+    if (re.test(key)) map[key.replace(re,function (ch) { return map_fault[ch]; })]=map[key];
+  }
+}
+
+
+=======
 
 // Fonctions
 
@@ -69,6 +126,7 @@ function complete_current_faults(map,map_fault){
 }
 
 // Variables - dictionnaire
+>>>>>>> .r31
 var complete = {
 	//Last Update : Line = 864
 	//Total Words : 17.122 Words
@@ -184,7 +242,6 @@ var complete = {
   'acidulé': 'acidulée', 'acidulée': 'acidulé','acidulés': 'acidulées', 'acidulées': 'acidulés',
   'acquéri': 'acquérie', 'acquérie': 'acquéri','acquéris': 'acquéries', 'acquéries': 'acquéris',
   'acquitté': 'acquittée', 'acquittée': 'acquitté','acquittés': 'acquittées', 'acquittées': 'acquittés',
-  'acrimonieux': 'acrimonieuse', 'acrimonieuse': 'acrimonieux', 'acrimonieuses': 'acrimonieux',
   'acté': 'actée', 'actée': 'acté','actés': 'actées', 'actées': 'actés',
   'acteur': 'actrice', 'actrice': 'acteur','acteurs': 'actrices', 'actrices': 'acteurs',
   'actionné': 'actionnée', 'actionnée': 'actionné','actionnés': 'actionnées', 'actionnées': 'actionnés',
@@ -201,7 +258,6 @@ var complete = {
   'adéquat': 'adéquate', 'adéquate': 'adéquat', 'adéquats': 'adéquates', 'adéquates': 'adéquats',
   'adhéré': 'adhérée', 'adhérée': 'adhéré','adhérés': 'adhérées', 'adhérées': 'adhérés',
   'adhérent': 'adhérente', 'adhérente': 'adhérent', 'adhérents': 'adhérentes', 'adhérentes': 'adhérents',
-  'adipeux': 'adipeuse', 'adipeuse': 'adipeux', 'adipeuses': 'adipeux',
   'adjacent': 'adjacente', 'adjacente': 'adjacent', 'adjacents': 'adjacentes', 'adjacentes': 'adjacents',
   'adjoint': 'adjointe', 'adjointe': 'adjoint','adjoints': 'adjointes', 'adjointes': 'adjoints',
   'adjuré': 'adjurée', 'adjurée': 'adjuré','adjurés': 'adjurées', 'adjurées': 'adjurés',
@@ -237,7 +293,6 @@ var complete = {
   'affecté': 'affectée', 'affectée': 'affecté','effectés': 'affectées', 'affectées': 'effectés',
   'affectif': 'affective', 'affective': 'affectif', 'affectifs': 'affectives', 'affectives': 'affectifs',
   'affectionné': 'affectionnée', 'affectionnée': 'affectionné','affectionnés': 'affectionnées', 'affectionnées': 'affectionnés',
-  'affectueux': 'affectueuse', 'affectueuse': 'affectueux', 'affectueuses': 'affectueux',
   'affermi': 'affermie', 'affermie': 'affermi','affermis': 'affermies', 'affermies': 'affermis',
   'affiché': 'affichée', 'affichée': 'affiché','affichés': 'affichées', 'affichées': 'affichés',
   'affilié': 'affiliée', 'affiliée': 'affilié','affiliés': 'affiliées', 'affiliées': 'affiliés',
@@ -290,12 +345,9 @@ var complete = {
   'ajouté': 'ajoutée', 'ajoutée': 'ajouté','ajoutés': 'ajoutées', 'ajoutées': 'ajoutés',
   'ajusté': 'ajustée', 'ajustée': 'ajusté','ajustés': 'ajustées', 'ajustées': 'ajustés',
   'alarmé': 'alarmée', 'alarmée': 'alarmé','alarmés': 'alarmées', 'alarmées': 'alarmés',
-  'albanais': 'albanaise', 'albanaise': 'albanais', 'albanaises': 'albanais',
-  'albigeois': 'albigeoise', 'albigeoise': 'albigeois', 'albigeoises': 'albigeois',
   'alcoolisé': 'alcoolisée', 'alcoolisée': 'alcoolisé','alcoolisés': 'alcoolisées', 'alcoolisées': 'alcoolisés',
   'alerté': 'alertée', 'alertée': 'alerté','alertés': 'alertées', 'alertées': 'alertés',
   'algérien': 'algérienne', 'algérienne': 'algérien', 'algériens': 'algériennes', 'algériennes': 'algériens',
-  'algérois': 'algéroise', 'algéroise': 'algérois', 'algéroises': 'algérois',
   'algonkin': 'algonkine', 'algonkine': 'algonkin', 'algonkins': 'algonkines', 'algonkines': 'algonkins',
   'aligné': 'alignée', 'alignée': 'aligné','alignés': 'alignées', 'alignées': 'alignés',
   'alimenté': 'alimentée', 'alimentée': 'alimenté','alimentés': 'alimentées', 'alimentées': 'alimentés',
@@ -332,7 +384,6 @@ var complete = {
   'amoncelé': 'amoncelée', 'amoncelée': 'amoncelé','amoncelés': 'amoncelées', 'amoncelées': 'amoncelés',
   'amorcé': 'amorcée', 'amorcée': 'amorcé','amorcés': 'amorcées', 'amorcées': 'amorcés',
   'amorti': 'amortie', 'amortie': 'amorti','amortis': 'amorties', 'amorties': 'amortis',
-  'amoureux': 'amoureuse', 'amoureuse': 'amoureux', 'amoureuses': 'amoureux',
   'amplifié': 'amplifiée', 'amplifiée': 'amplifié', 'amplifiés': 'amplifiées', 'amplifiées': 'amplifiés',
   'amputé': 'amputée', 'amputée': 'amputé','amputés': 'amputées', 'amputées': 'amputés',
   'amusé': 'amusée', 'amusée': 'amusé','amusés': 'amusées', 'amusées': 'amusés',
@@ -346,11 +397,9 @@ var complete = {
   'androgyne': 'misogyne', 'misogyne': 'androgyne',
   'anéanti': 'anéantie', 'anéantie': 'anéanti','anéantis': 'anéanties', 'anéanties': 'anéantis',
   'anesthésié': 'anesthésiée', 'anesthésiée': 'anesthésié','anesthésiés': 'anesthésiées', 'anesthésiées': 'anesthésiés',
-  'anglais': 'anglaise', 'anglaise': 'anglais', 'anglaises': 'anglais',
   'anglican': 'anglicane', 'anglicane': 'anglican', 'anglicans': 'anglicanes', 'anglicanes': 'anglicans',
   'anglo-saxon': 'anglo-saxonne', 'anglo-saxonne': 'anglo-saxon', 'anglo-saxons': 'anglo-saxonnes', 'anglo-saxonnes': 'anglo-saxons',
   'angoissé': 'angoissée', 'angoissée': 'angoissé','angoissés': 'angoissées', 'angoissées': 'angoissés',
-  'angolais': 'angolaise', 'angolaise': 'angolais', 'angolaises': 'angolais',
   'ânier': 'ânière', 'ânière': 'ânier', 'âniers': 'ânières', 'ânières': 'âniers',
   'animateur': 'animatrice', 'animatrice': 'animateur','animateurs': 'animatrices', 'animatrices': 'animateurs',
   'animé': 'animée', 'animée': 'animé','animés': 'animées', 'animées': 'animés',
@@ -364,9 +413,7 @@ var complete = {
   'anobli': 'anoblie', 'anoblie': 'anobli','anoblis': 'anoblies', 'anoblies': 'anoblis',
   'antédiluvien': 'antédiluvienne', 'antédiluvienne': 'antédiluvien', 'antédiluviens': 'antédiluviennes', 'antédiluviennes': 'antédiluviens',
   'anticipé': 'anticipée', 'anticipée': 'anticipé','anticipés': 'anticipées', 'anticipées': 'anticipés',
-  'antillais': 'antillaise', 'antillaise': 'antillais', 'antillaises': 'antillais',
   'antisocial': 'antisociale', 'antisociale': 'antisocial', 'antisociaux': 'antisociales', 'antisociales': 'antisociaux',
-  'anxieux': 'anxieuse', 'anxieuse': 'anxieux', 'anxieuses': 'anxieux',
   'aoûtien': 'aoûtienne', 'aoûtienne': 'aoûtien', 'aoûtiens': 'aoûtiennes', 'aoûtiennes': 'aoûtiens',
   'apaisé': 'apaisée', 'apaisée': 'apaisé','apaisés': 'apaisées', 'apaisées': 'apaisés',
   'aperçu': 'aperçue', 'aperçue': 'aperçu', 'aperçus': 'aperçues', 'aperçues': 'aperçus',
@@ -396,7 +443,6 @@ var complete = {
   'approché': 'approchée', 'approchée': 'approché','approchés': 'approchées', 'approchées': 'approchés',
   'approfondi': 'approfondie', 'approfondie': 'approfondi','approfondis': 'approfondies', 'approfondies': 'approfondis',
   'appuyé': 'appuyée', 'appuyée': 'appuyé','appuyés': 'appuyées', 'appuyées': 'appuyés',
-  'aqueux': 'aqueuse', 'aqueuse': 'aqueux', 'aqueuses': 'aqueux',
   'arachnéen': 'arachnéenne', 'arachnéenne': 'arachnéen', 'arachnéens': 'arachnéennes', 'arachnéennes': 'arachnéens',
   'araméen': 'araméenne', 'arachnéenne': 'araméen', 'araméens': 'araméennes', 'araméennes': 'araméens',
   'arbitré': 'arbitrée', 'arbitrée': 'arbitré','arbitrés': 'arbitrées', 'arbitrées': 'arbitrés',
@@ -404,11 +450,8 @@ var complete = {
   'arboriculteur': 'arboricultrice', 'arboricultrice': 'arboriculteur', 'arboriculteurs': 'arboricultrices', 'arboricultrices': 'arboriculteurs',
   'archiduc': 'archiduchesse', 'archiduchesse': 'archiduc','archiducs': 'archiduchesses', 'archiduchesses': 'archiducs', 
   'archivé': 'archivée', 'archivée': 'archivé','archivés': 'archivées', 'archivées': 'archivés',
-  'ardéchois': 'ardéchoise', 'ardéchoise': 'ardéchois', 'ardéchoises': 'ardéchois',
-  'ardennais': 'ardennaise', 'ardennaise': 'ardennais', 'ardennaises': 'ardennais',
   'argenté': 'argentée', 'argentée': 'argenté', 'argentés': 'argentées', 'argentées': 'argentés',
   'argumenté': 'argumentée', 'argumentée': 'argumenté','argumentés': 'argumentées', 'argumentées': 'argumentés',
-  'ariégois': 'ariégoise', 'ariégoise': 'ariégois', 'ariégoises': 'ariégois',
   'arien': 'arienne', 'arienne': 'arien', 'ariens': 'ariennes', 'ariennes': 'ariens',
   'aristotélicien': 'aristotélicienne', 'aristotélicienne': 'aristotélicien', 'aristotéliciens': 'aristotéliciennes', 'aristotéliciennes': 'aristotélicien',
   'arlésien': 'arlésienne', 'arlésienne': 'arlésien', 'arlésiens': 'arlésiennes', 'arlésiennes': 'arlésiens',
@@ -480,7 +523,6 @@ var complete = {
   'attribué': 'attribuée', 'attribuée': 'attribué','attribués': 'attribuées', 'attribuées': 'attribués',
   'attristé': 'attristée', 'attristée': 'attristé','attristés': 'attristées', 'attristées': 'attristés',
   'attroupé': 'attroupée', 'attroupée': 'attroupé','attroupés': 'attroupées', 'attroupées': 'attroupés',
-  'audacieux': 'audacieuse', 'audacieuse': 'audacieux', 'audacieuses': 'audacieux',
   'auditionné': 'auditionnée', 'auditionnée': 'auditionné','auditionnés': 'auditionnées', 'auditionnées': 'auditionnés',
   'auditeur': 'auditrice', 'auditrice': 'auditeur', 'auditeurs': 'auditrices', 'auditrices': 'auditeurs',
   'augmenté': 'augmentée', 'augmentée': 'augmenté','augmentés': 'augmentées', 'augmentées': 'augmentés',
@@ -498,7 +540,6 @@ var complete = {
   'avantagé': 'avantagée', 'avantagée': 'avantagé','avantagés': 'avantagées', 'avantagées': 'avantagés',
   'avant-dernier': 'avant-dernière', 'avant-dernière': 'avant-dernier', 'avant-derniers': 'avant-dernières', 'avant-dernières': 'avant-derniers',
   'aventuré': 'aventurée', 'aventurée': 'aventuré','aventurés': 'aventurées', 'aventurées': 'aventurés',
-  'aventureux': 'aventureuse', 'aventureuse': 'aventureux', 'aventureuses': 'aventureux',
   'aventurier': 'aventurière', 'aventurière': 'aventurier', 'aventuriers': 'aventurières', 'aventurières': 'aventuriers',
   'avéré': 'avérée', 'avérée': 'avéré','avérés': 'avérées', 'avérées': 'avérés',
   'averti': 'avertie', 'avertie': 'averti','avertis': 'averties', 'averties': 'avertis',
@@ -535,7 +576,6 @@ var complete = {
   'balzacien': 'balzacienne', 'balzacienne': 'balzacien', 'balzaciens': 'balzaciennes', 'balzaciennes': 'balzaciens',
   'banalisé': 'banalisée', 'banalisée': 'banalisé','banalisés': 'banalisées', 'banalisées': 'banalisés',
   'bandé': 'bandée', 'bandée': 'bandé','bandés': 'bandées', 'bandées': 'bandés',
-  'bangladais': 'bangladaise', 'bangladaise': 'bangladais', 'bangladaises': 'bangladais',
   'banlieusard': 'banlieusarde', 'banlieusarde': 'banlieusard', 'banlieusards': 'banlieusardes', 'banlieusardes': 'banlieusards',
   'banni': 'bannie', 'bannie': 'banni','bannis': 'bannies', 'bannies': 'bannis',
   'baptisé': 'baptisée', 'baptisée': 'baptisé','baptisés': 'baptisées', 'baptisées': 'baptisés',
@@ -552,28 +592,23 @@ var complete = {
   'bâtisseur': 'bâtisseuse', 'bâtisseuse': 'bâtisseur', 'bâtisseurs': 'bâtisseuses', 'bâtisseuses': 'bâtisseurs',
   'battu': 'battue', 'battue': 'battu','battus': 'battues', 'battues': 'battus',
   'bavard': 'bavarde', 'bavarde': 'bavard', 'bavards': 'bavardes', 'bavardes': 'bavards',
-  'bavarois': 'bavaroise', 'bavaroise': 'bavarois', 'bavaroises': 'bavarois',
   'bavé': 'bavée', 'bavée': 'bavé','bavés': 'bavées', 'bavées': 'bavés',
+  'beau-frère': 'belle-soeur', 'beau-frere': 'belle-soeur', 'beau-frère': 'belle-soeur',
   'beauceron': 'beauceronne', 'beauceronne': 'beauceron', 'beaucerons': 'beauceronnes', 'beauceronnes': 'beaucerons',
   'bédouin': 'bédouine', 'bédouine': 'bédouin', 'bédouins': 'bédouines', 'bédouines': 'bédouins',
   'belle-mère': 'beau-père', 'belle-mere': 'beau-pere',
   'belle-soeur': 'beau-frère',
-  'belliqueux': 'belliqueuse', 'belliqueuse': 'belliqueux', 'belliqueuses': 'belliqueux',
   'bénéficié': 'bénéficiée', 'bénéficiée': 'bénéficié','bénéficiés': 'bénéficiées', 'bénéficiées': 'bénéficiés',
   'bengali': 'bengalie', 'bengalie': 'bengali', 'bengalis': 'bengalies', 'bengalies': 'bengalis',
   'béni': 'bénie', 'bénie': 'béni','bénis': 'bénies', 'bénies': 'bénis',
   'béotien': 'béotienne', 'béotienne': 'béotien', 'béotiens': 'béotiennes', 'béotiennes': 'béotiens',
   'bercé': 'bercée', 'bercée': 'bercé','bercés': 'bercées', 'bercées': 'bercés',
-  'berlinois': 'berlinoise', 'berlinoise': 'berlinois', 'berlinoises': 'berlinois',
   'berné': 'bernée', 'bernée': 'berné','bernés': 'bernées', 'bernées': 'bernés',
-  'bernois': 'bernoise', 'bernoise': 'bernois', 'bernoises': 'bernois',
   'bétonné': 'bétonnée', 'bétonnée': 'bétonné','bétonnés': 'bétonnées', 'bétonnées': 'bétonnés',
   'beuglé': 'beuglée', 'beuglée': 'beuglé','beuglés': 'beuglées', 'beuglées': 'beuglés',
   'beurré': 'beurrée', 'beurrée': 'beurré','beurrés': 'beurrées', 'beurrées': 'beurrés',
-  'bhoutanais': 'bhoutanaise', 'bhoutanaise': 'bhoutanais', 'bhoutanaises': 'bhoutanais',
   'bichonné': 'bichonnée', 'bichonnée': 'bichonné','bichonnés': 'bichonnées', 'bichonnées': 'bichonnés',
   'bienfaiteur': 'bienfaitrice', 'bienfaitrice': 'bienfaiteur', 'bienfaiteurs': 'bienfaitrices', 'bienfaitrices': 'bienfaiteurs',
-  'bigleux': 'bigleuse', 'bigleuse': 'bigleux', 'bigleuses': 'bigleux',
   'bigouden': 'bigoudène', 'bigoudène': 'bigouden', 'bigoudens': 'bigoudènes', 'bigoudènes': 'bigoudens',
   'bijoutier': 'bijoutiere', 'bijoutiere': 'bijoutier','bijoutiers': 'bijoutieres', 'bijoutieres': 'bijoutiers',
   'biophysicien': 'biophysicienne', 'biophysicienne': 'biophysicien', 'biophysiciens': 'biophysiciennes', 'biophysiciennes': 'biophysiciens',
@@ -591,11 +626,9 @@ var complete = {
   'blondinet': 'blondinette', 'blondinette': 'blondinet', 'blondinets': 'blondinettes', 'blondinettes': 'blondinets',
   'bluffeur': 'bluffeuse', 'bluffeuse': 'bluffeur', 'bluffeurs': 'bluffeuses', 'bluffeuses': 'bluffeurs',
   'bohémien': 'bohémienne', 'bohémienne': 'bohémien', 'bohémiens': 'bohémiennes', 'bohémiennes': 'bohémiens',
-  'boiteux': 'boiteuse', 'boiteuse': 'boiteux', 'boiteuses': 'boiteux',
   'bolivien': 'bolivienne', 'bolivienne': 'bolivien', 'boliviens': 'boliviennes', 'boliviennes': 'boliviens',
   'bombardé': 'bombardée', 'bombardée': 'bombardé','bombardés': 'bombardées', 'bombardées': 'bombardés',
   'bordé': 'bordée', 'bordée': 'bordé','bordés': 'bordées', 'bordées': 'bordés',
-  'bordelais': 'bordelaise', 'bordelaise': 'bordelais', 'bordelaises': 'bordelais',
   'borné': 'bornée', 'bornée': 'borné','bornés': 'bornées', 'bornées': 'bornés',
   'bossé': 'bossée', 'bossée': 'bossé','bossés': 'bossées', 'bossées': 'bossés',
   'bosseur': 'bosseuse', 'bosseuse': 'bosseur', 'bosseurs': 'bosseuses', 'bosseuses': 'bosseurs',
@@ -607,7 +640,6 @@ var complete = {
   'bouilli': 'bouillie', 'bouillie': 'bouilli','bouillis': 'bouillies', 'bouillies': 'bouillis',
   'boulanger': 'boulangere', 'boulangere': 'boulanger','boulangers': 'boulangeres', 'boulangeres': 'boulangers',
   'bouleversé': 'bouleversée', 'bouleversée': 'bouleversé','bouleversés': 'bouleversées', 'bouleversées': 'bouleversés',
-  'bourgeois': 'bourgeoise', 'bourgeoise': 'bourgeois', 'bourgeoises': 'bourgeois',
   'bourguignon': 'bourguignonne', 'bourguignonne': 'bourguignon', 'bourguignons': 'bourguignonnes', 'bourguignonnes': 'bourguignons',
   'bourré': 'bourrée', 'bourrée': 'bourré','bourrés': 'bourrées', 'bourrées': 'bourrés',
   'bousculé': 'bousculée', 'bousculée': 'bousculé','bousculés': 'bousculées', 'bousculées': 'bousculés',
@@ -643,8 +675,6 @@ var complete = {
   'bruni': 'brunie', 'brunie': 'bruni','brunis': 'brunies', 'brunies': 'brunis',
   'brusqué': 'brusquée', 'brusquée': 'brusqué','brusqués': 'brusquées', 'brusquées': 'brusqués',
   'brutalisé': 'brutalisée', 'brutalisée': 'brutalisé','brutalisés': 'brutalisées', 'brutalisées': 'brutalisés',
-  'bruxellois': 'bruxelloise', 'bruxelloise': 'bruxellois', 'bruxelloises': 'bruxellois',
-  'bu': 'bue', 'bue': 'bu', 'bues': 'bus',
   'bucheron': 'bucheronne', 'bucheronne': 'bucheron','bucherons': 'bucheronnes', 'bucheronnes': 'bucherons',
   'budgetisé': 'budgetisée', 'budgetisée': 'budgetisé','budgetisés': 'budgetisées', 'budgetisées': 'budgetisés',
   'bureauticien': 'bureauticienne', 'bureauticienne': 'bureauticien', 'bureauticiens': 'bureauticiennes', 'bureauticiennes': 'bureauticiens',
@@ -685,13 +715,11 @@ var complete = {
   'canardé': 'canardée', 'canardée': 'canardé','canardés': 'canardées', 'canardées': 'canardés',
   'candidat': 'candidate', 'candidate': 'candidat', 'candidats': 'candidates', 'candidates': 'candidats',
   'canonisé': 'canonisée', 'canonisée': 'canonisé','canonisés': 'canonisées', 'canonisées': 'canonisés',
-  'cantonais': 'cantonaise', 'cantonaise': 'cantonais', 'cantonaises': 'cantonais',
   'cantonné': 'cantonnée', 'cantonnée': 'cantonné','cantonnés': 'cantonnées', 'cantonnées': 'cantonnés',
   'capésien': 'capésienne', 'capésienne': 'capésien', 'capésiens': 'capésiennes', 'capésiennes': 'capésiens',
   'capétien': 'capétienne', 'capétienne': 'capétien', 'capétiens': 'capétiennes', 'capétiennes': 'capétiens',
   'capitalisé': 'capitalisée', 'capitalisée': 'capitalisé','capitalisés': 'capitalisées', 'capitalisées': 'capitalisés',
   'capoté': 'capotée', 'capotée': 'capoté','capotés': 'capotées', 'capotées': 'capotés',
-  'capricieux': 'capricieuse', 'capricieuse': 'capricieux', 'capricieuses': 'capricieux',
   'capté': 'captée', 'captée': 'capté','captés': 'captées', 'captées': 'captés',
   'captif': 'captive', 'captive': 'captif', 'captifs': 'captives', 'captives': 'captifs',
   'captivé': 'captivée', 'captivée': 'captivé','captivés': 'captivées', 'captivées': 'captivés',
@@ -707,7 +735,6 @@ var complete = {
   'carrelé': 'carrelée', 'carrelée': 'carrelé','carrelés': 'carrelées', 'carrelées': 'carrelés',
   'carreleur': 'carreleuse', 'carreleuse': 'carreleur','carreleurs': 'carreleuses', 'carreleuses': 'carreleurs',
   'cartésien': 'cartésienne', 'cartésienne': 'cartésien', 'cartésiens': 'cartésiennes', 'cartésiennes': 'cartésiens',
-  'carthaginois': 'carthaginoise', 'carthaginoise': 'carthaginois', 'carthaginoises': 'carthaginois',
   'cartomancien': 'cartomancienne', 'cartomancienne': 'cartomancien', 'cartomanciens': 'cartomanciennes', 'cartomanciennes': 'cartomanciens',
   'cartonné': 'cartonnée', 'cartonnée': 'cartonné','cartonnés': 'cartonnées', 'cartonnées': 'cartonnés',
   'cascadeur': 'cascadeuse', 'cascadeuse': 'cascadeur', 'cascadeurs': 'cascadeuses', 'cascadeuses': 'cascadeurs',
@@ -738,9 +765,7 @@ var complete = {
   'chagriné': 'chagrinée', 'chagrinée': 'chagriné','chagrinés': 'chagrinées', 'chagrinées': 'chagrinés',
   'chamboulé': 'chamboulée', 'chamboulée': 'chamboulé','chamboulés': 'chamboulées', 'chamboulées': 'chamboulés',
   'chambré': 'chambrée', 'chambrée': 'chambré','chambrés': 'chambrées', 'chambrées': 'chambrés',
-  'champenois': 'champenoise', 'champenoise': 'champenois', 'champenoises': 'champenois',
   'champion': 'championne', 'championne': 'champion', 'champions': 'championnes', 'championnes': 'champions',
-  'chanceux': 'chanceuse', 'chanceuse': 'chanceux', 'chanceuses': 'chanceux',
   'changé': 'changée', 'changée': 'changé','changés': 'changées', 'changées': 'changés',
   'chanté': 'chantée', 'chantée': 'chanté','chantés': 'chantées', 'chantées': 'chantés',
   'chanteur': 'chanteuse', 'chanteuse': 'chanteur', 'chanteurs': 'chanteuses', 'chanteuses': 'chanteurs',
@@ -749,17 +774,14 @@ var complete = {
   'chapelier': 'chapelière', 'chapelière': 'chapelier', 'chapeliers': 'chapelières', 'chapelières': 'chapeliers',
   'charcuté': 'charcutée', 'charcutée': 'charcuté','charcutés': 'charcutées', 'charcutées': 'charcutés',
   'charcutier': 'charcutière', 'charcutière': 'charcutier','charcutiers': 'charcutières', 'charcutières': 'charcutiers',
-  'charentais': 'charentaise', 'charentaise': 'charentais', 'charentaises': 'charentais',
   'chargé': 'chargée', 'chargée': 'chargé','chargés': 'chargées', 'chargées': 'chargés',
   'charmé': 'charmée', 'charmée': 'charmé','charmés': 'charmées', 'charmées': 'charmés',
   'charmeur': 'charmeuse', 'charmeuse': 'charmeur', 'charmeurs': 'charmeuses', 'charmeuses': 'charmeurs',
-  'charolais': 'charolaise', 'charolaise': 'charolais', 'charolaises': 'charolais',
   'charpentier': 'charpentière', 'charpentière': 'charpentier','charpentiers': 'charpentières', 'charpentières': 'charpentiers',
   'chasseur': 'chasseuse', 'chasseuse': 'chasseur', 'chasseurs': 'chasseuses', 'chasseuses': 'chasseurs',
   'chat': 'chatte', 'chatte': 'chat', 'chats': 'chattes', 'chattes': 'chats',
   'châtelain': 'châtelaine', 'châtelaine': 'châtelain', 'châtelains': 'châtelaines', 'châtelaines': 'châtelains',
   'chatouillé': 'chatouillée', 'chatouillée': 'chatouillé','chatouillés': 'chatouillées', 'chatouillées': 'chatouillés',
-  'chatouilleux': 'chatouilleuse', 'chatouilleuse': 'chatouilleux', 'chatouilleuses': 'chatouilleux',
   'chauffé': 'chauffée', 'chauffée': 'chauffé','chauffés': 'chauffées', 'chauffées': 'chauffés',
   'chef': 'cheffe', 'cheffe': 'chef','chefs': 'cheffes', 'cheffes': 'chefs',
   'cherché': 'cherchée', 'cherchée': 'cherché','cherchés': 'cherchées', 'cherchées': 'cherchés',
@@ -770,7 +792,6 @@ var complete = {
   'chifonné': 'chifonnée', 'chifonnée': 'chifonné','chifonnés': 'chifonnées', 'chifonnées': 'chifonnés',
   'chiffré': 'chiffrée', 'chiffrée': 'chiffré','chiffrés': 'chiffrées', 'chiffrées': 'chiffrés',
   'chilien': 'chilienne', 'chilienne': 'chilien', 'chiliens': 'chiliennes', 'chiliennes': 'chiliens',
-  'chinois': 'chinoise', 'chinoise': 'chinois', 'chinoises': 'chinois',
   'chipoteur': 'chipoteuse', 'chipoteuse': 'chipoteur', 'chipoteurs': 'chipoteuses', 'chipoteuses': 'chipoteurs',
   'chirurgien': 'chirurgienne', 'chirurgienne': 'chirurgien','chirurgiens': 'chirurgiennes', 'chirurgiennes': 'chirurgiens',
   'choisi': 'choisie', 'choisie': 'choisi','choisis': 'choisies', 'choisies': 'choisis',
@@ -811,7 +832,6 @@ var complete = {
   'coiffé': 'coiffée', 'coiffée': 'coiffé','coiffés': 'coiffées', 'coiffées': 'coiffés',
   'coiffeur': 'coiffeuse', 'coiffeuse': 'coiffeur','coiffeurs': 'coiffeuses', 'coiffeuses': 'coiffeurs',
   'coincé': 'coincée', 'coincée': 'coincé','coincés': 'coincées', 'coincées': 'coincés',
-  'coléreux': 'coléreuse', 'coléreuse': 'coléreux', 'coléreuses': 'coléreux',
   'collaborateur': 'collaboratrice', 'collaboratrice': 'collaborateur', 'collaborateurs': 'collaboratrices', 'collaboratrices': 'collaborateurs',
   'collé': 'collée', 'collée': 'collé','collés': 'collées', 'collées': 'collés',
   'collecté': 'collectée', 'collectée': 'collecté','collectés': 'collectées', 'collectées': 'collectés',
@@ -882,7 +902,6 @@ var complete = {
   'confucéen': 'confucéenne', 'confucéenne': 'confucéen', 'confucéens': 'confucéennes', 'confucéennes': 'confucéens',
   'congédié': 'congédiée', 'congédiée': 'congédié','congédiés': 'congédiées', 'congédiées': 'congédiés',
   'congelé': 'congelée', 'congelée': 'congelé','congelés': 'congelées', 'congelées': 'congelés',
-  'congolais': 'congolaise', 'congolaise': 'congolais', 'congolaises': 'congolais',
   'conjoint': 'conjointe', 'conjointe': 'conjoint', 'conjoints': 'conjointes', 'conjouintes': 'conjoints',
   'conjugué': 'conjuguée', 'conjuguée': 'conjugué','conjugués': 'conjuguées', 'conjuguées': 'conjugués',
   'conjuré': 'conjurée', 'conjurée': 'conjuré','conjurés': 'conjurées', 'conjurées': 'conjurés',
@@ -894,7 +913,6 @@ var complete = {
   'conquis': 'conquise', 'conquise': 'conquis','conquis': 'conquises', 'conquises': 'conquis',
   'consacré': 'consacrée', 'consacrée': 'consacré','consacrés': 'consacrées', 'consacrées': 'consacrés',
   'consanguin': 'consanguine', 'consanguine': 'consanguin', 'consanguins': 'consanguines', 'consanguines': 'consanguins',
-  'consciencieux': 'consciencieuse', 'consciencieuse': 'consciencieux', 'consciencieuses': 'consciencieux',
   'conseillé': 'conseillée', 'conseillée': 'conseillé','conseillés': 'conseillées', 'conseillées': 'conseillés',
   'conseiller': 'conseillère', 'conseillère': 'conseiller','conseillers': 'conseillères', 'conseillères': 'conseillers',
   'consentant': 'consentante', 'consentante': 'consentant', 'consentants': 'consentantes', 'consentantes': 'consentants',
@@ -979,8 +997,12 @@ var complete = {
   'craquant': 'craquante', 'craquante': 'craquant', 'craquants': 'craquantes', 'craquantes': 'craquants',
   'craqué': 'craquée', 'craquée': 'craqué','craqués': 'craquées', 'craquées': 'craqués',
   'créateur': 'créatrice', 'créatrice': 'créateur','createur': 'creatrice', 'creatrice': 'createur','créateurs': 'créatrices', 'créatrices': 'créateurs','createurs': 'creatrices', 'creatrices': 'createurs',
+  'créatif': 'créative', 'créative': 'créatif', 'créatifs': 'créatives', 'créatives': 'créatifs',
   'crédité': 'créditée', 'créditée': 'crédité','crédités': 'créditées', 'créditées': 'crédités',
+  'créditeur': 'créditrice', 'créditrice': 'créditeur', 'créditeurs': 'créditrices', 'créditrices': 'créditeurs',
   'créé': 'créée', 'créée': 'créé','créés': 'créées', 'créées': 'créés',
+  'crémier': 'crémière', 'crémière': 'crémier', 'crémiers': 'crémières', 'crémières': 'crémiers',
+  'crétin': 'crétine', 'crétine': 'crétin', 'crétins': 'crétines', 'crétines': 'crétins',
   'creusé': 'creusée', 'creusée': 'creusé','creusés': 'creusées', 'creusées': 'creusés',
   'crevé': 'crevée', 'crevée': 'crevé','crevés': 'crevées', 'crevées': 'crevés',
   'criblé': 'criblée', 'criblée': 'criblé','criblés': 'criblées', 'criblées': 'criblés',
@@ -2215,6 +2237,7 @@ var complete = {
   //'tyran': 'tyrannie', 'tyrannie': 'tyran', 'tyrans': 'tyrannies', 'tyrannies': 'tyrans',
   'tyrannisé': 'tyrannisée', 'tyrannisée': 'tyrannisé','tyrannisés': 'tyrannisées', 'tyrannisées': 'tyrannisés',
   // -U- 
+  //~ 'un': 'une', 'une': 'un','une': 'un', 'un': 'une', 
   'unifié': 'unifiée', 'unifiée': 'unifié','unifiés': 'unifiées', 'unifiées': 'unifiés',
   'uni': 'unie', 'unie': 'uni','unis': 'unies', 'unies': 'unis',
   'usé': 'usée', 'usée': 'usé','usés': 'usées', 'usées': 'usés',
@@ -2235,7 +2258,7 @@ var complete = {
   'vendu': 'vendue', 'vendue': 'vendu','vendus': 'vendues', 'vendues': 'vendus',
   'vénéré': 'vénérée', 'vénérée': 'vénéré','vénérés': 'vénérées', 'vénérées': 'vénérés',
   'vengé': 'vengée', 'vengée': 'vengé','vengés': 'vengées', 'vengées': 'vengés',
-  'vengeur': 'vengeresse', 'vengeresse': 'vengeur', 'vengeurs': 'vengeresses',
+  'vengeur': 'vengeresse', 'vengeresse': 'vengeur', 'vengeurs': 'vengeresses', 'vengeresses': 'vengeurs',
   'venu': 'venue', 'venue': 'venu','venus': 'venues', 'venues': 'venus',
   'ventilé': 'ventilée', 'ventilée': 'ventilé','ventilés': 'ventilées', 'ventilées': 'ventilés',
   'verglacé': 'verglacée', 'verglacée': 'verglacé','verglacés': 'verglacées', 'verglacées': 'verglacés',
@@ -2276,6 +2299,7 @@ var complete = {
 };   
           
 // =============================================================================
+
 var correspondance=[
 ["lui-même","elle-même",""],
 ["eux-même","elles-même",""],
@@ -2317,8 +2341,7 @@ var correspondance=[
 ["un régime","une organisation",""],
 ["le sein","la poitrine",""],
 ["proclamé","proclamée","s"],
-["membre","membre","s"],
-["un","une",'s']
+["membre","membre","s"]
 ]
 
 var correspondance_sujet=[
@@ -2330,15 +2353,95 @@ var correspondance_sujet=[
 ]
 
 var correspondance_singulier=[
+["acrimonieux","acrimonieuse"],
+["adipeux","adipeuse"],
+["affectueux","affectueuse"],
+["albanais","albanaise"],
+["albigeois","albigeoise"],
+["algérois","algéroise"],
+["amoureux","amoureuse"],
+["anglais","anglaise"],
+["angolais","angolaise"],
+["antillais","antillaise"],
+["anxieux","anxieuse"],
+["ardéchois","ardéchoise"],
+["ardennais","ardennaise"],
+["ariégeois","ariégeoise"],
+["audacieux","audacieuse"],
+["aventureux","aventureuse"],
+["bangladais","bangladaise"],
+["bavarois","bavaroise"],
+["belliqueux","belliqueuse"],
+["berlinois","berlinoise"],
+["bernois","bernoise"],
+["bhoutanais","bhoutanaise"],
+["bigleux","bigleuse"],
+["boiteux","boiteuse"],
+["bordelais","bordelaise"],
+["bourgeois","bourgeoise"],
+["bruxellois","bruxelloise"],
+["cantonais","cantonaise"],
+["capricieux","capricieuse"],
+["carthaginois","carthaginoise"],
+["champenois","champenoise"],
+["chanceux","chanceuse"],
+["charentais","charentaise"],
+["charolais","charolaise"],
+["chatouilleux","chatouilleuse"],
+["chinois","chinoise"],
+["coléreux","coléreuse"],
+["congolais","congolaise"],
+["consciencieux","consciencieuse"],
 ["courageux","courageuse"],
 ["crapuleux","crapuleuse"],
 ["crasseux","crasseuse"],
+["crétois","crétoise"],
 ["fils","fille"]
 ]
 var correspondance_pluriel=[
+["acrimonieux","acromonieuses"],
+["adipeux","adipeuses"],
+["affectueux","affectueuses"],
+["albanais","albanaises"],
+["albigeois","albigeoises"],
+["algérois","algéroises"],
+["amoureux","amoureuses"],
+["anglais","anglaises"],
+["angolais","angolaises"],
+["antillais","antillaises"],
+["anxieux","anxieuses"],
+["ardéchois","ardéchoises"],
+["ardennais","ardennaises"],
+["ariégeois","ariégeoises"],
+["audacieux","audacieuses"],
+["aventureux","aventureuses"],
+["bangladais","bangladaises"],
+["bavarois","bavaroises"],
+["belliqueux","belliqueuses"],
+["berlinois","berlinoises"],
+["bernois","bernoises"],
+["bhoutanais","bhoutanaises"],
+["bigleux","bigleuses"],
+["boiteux","boiteuses"],
+["bordelais","bordelaises"],
+["bourgeois","bourgeoises"],
+["bruxellois","bruxelloises"],
+["cantonais","cantonaises"],
+["capricieux","capricieuses"],
+["carthaginois","carthaginoises"],
+["champenois","champenoises"],
+["chanceux","chanceuse"],
+["charentais","charentaises"],
+["charolais","charolaises"],
+["chatouilleux","chatouilleuses"],
+["chinois","chinoises"],
+["coléreux","coléreuses"],
+["congolais","congolaises"],
+["consciencieux","consciencieuses"],
 ["courageux","courageuses"],
 ["crapuleux","crapuleuses"],
 ["crasseux","crasseuses"],
+["crétois","crétoises"],
 ["fils","filles"]
 ]
 
@@ -2365,6 +2468,29 @@ var mot_fantom = '¤';
 // Pour les caractère qu'on a souvent peine à écrire
 var fautes_assumees_switch={'oe':'œ','œ':'oe'};
 
+<<<<<<< .mine
+var map = complete;
+var map_sujet={};
+var map_singulier={};
+var map_pluriel={};
+fill_switch_map(map,correspondance);
+fill_switch_map(map,correspondance_sujet);
+complete_current_faults(map,fautes_assumees_switch);
+fill_switch_map(map_sujet,correspondance_sujet);
+fill_switch_map(map_singulier,correspondance_singulier);
+fill_switch_map(map_pluriel,correspondance_pluriel);
+
+//Fonction qui recherche un mot dans notre tableau de mots
+function findMatch(word) {
+  return map[word];
+}
+function findMatchSingulier(word) {
+  return map_singulier[word];
+}
+function findMatchPluriel(word) {
+  return map_pluriel[word];
+}
+=======
 var map = complete;
 var map_sujet={};
 var map_singulier={};
@@ -2388,3 +2514,4 @@ function findMatchPluriel(word) {
 }
 
 
+>>>>>>> .r31
