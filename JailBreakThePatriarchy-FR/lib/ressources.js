@@ -14,8 +14,6 @@
 //    Sébastien GILLOT <sebastien.gillot@runbox.com> -> grammar tricks and some words
 //    Yoann LABONNE <yoann.labonne@gmail.com> -> filling the dictionnary 
 
-<<<<<<< .mine
-
 // Fonctions
 
 // Permet de définir un à un les caractères dans un mot
@@ -68,9 +66,6 @@ function complete_current_faults(map,map_fault){
     if (re.test(key)) map[key.replace(re,function (ch) { return map_fault[ch]; })]=map[key];
   }
 }
-
-
-=======
 
 // Fonctions
 
@@ -126,7 +121,6 @@ function complete_current_faults(map,map_fault){
 }
 
 // Variables - dictionnaire
->>>>>>> .r31
 var complete = {
 	//Last Update : Line = 864
 	//Total Words : 17.122 Words
@@ -1005,11 +999,21 @@ var complete = {
   'crétin': 'crétine', 'crétine': 'crétin', 'crétins': 'crétines', 'crétines': 'crétins',
   'creusé': 'creusée', 'creusée': 'creusé','creusés': 'creusées', 'creusées': 'creusés',
   'crevé': 'crevée', 'crevée': 'crevé','crevés': 'crevées', 'crevées': 'crevés',
-  'criblé': 'criblée', 'criblée': 'criblé','criblés': 'criblées', 'criblées': 'criblés',
+  'criard': 'criarde', 'criarde': 'criard', 'criards': 'criardes', 'criardes': 'criards',
+  'criblé': 'criblée', 'criblée': 'criblé', 'criblés': 'criblées', 'criblées': 'criblés',
+  'criminel': 'criminelle', 'criminelle': 'criminel', 'criminels': 'criminelles', 'criminelles': 'criminels',
+  'croisé': 'croisée', 'croisée': 'croisé', 'croisés': 'croisées', 'croisées': 'croisés',
+  'croupier': 'croupière', 'croupière': 'croupier', 'croupiers': 'croupières', 'croupières': 'croupiers',
   'cru': 'crue', 'crue': 'cru','crus': 'crues', 'crues': 'crus',
+  'cruel': 'cruelle', 'cruelle': 'cruel', 'cruels': 'cruelles', 'cruelles': 'cruels',
+  'cubain': 'cubaine', 'cubaine': 'cubain', 'cubains': 'cubaines', 'cubaines': 'cubains',
+  'cueilleur': 'cueilleuse', 'cueilleuse': 'cueilleur', 'cueilleurs': 'cueilleuses', 'cueilleuses': 'cueilleurs',
+  'cuisinier': 'cuisinière', 'cuisinière': 'cuisinier', 'cuisiniers': 'cuisinières', 'cuisinières': 'cuisiniers',
   'cuit': 'cuite', 'cuite': 'cuit','cuits': 'cuites', 'cuites': 'cuits',
+  'cultivateur': 'cultivatrice', 'cultivatrice': 'cultivateur', 'cultivateurs': 'cultivatrices', 'cultivatrices': 'cultivateurs',
   'cultivé': 'cultivée', 'cultivée': 'cultivé','cultivés': 'cultivées', 'cultivées': 'cultivés',
   'cumulé': 'cumulée', 'cumulée': 'cumulé','cumulés': 'cumulées', 'cumulées': 'cumulés',
+  'curateur': 'curatrice', 'curatrice': 'curateur', 'curateurs': 'curatrices', 'curatrices': 'curateurs',
   // -D-
   'dactylographié': 'dactylographiée', 'dactylographiée': 'dactylographié','dactylographiés': 'dactylographiées', 'dactylographiées': 'dactylographiés',
   'dame': 'sir', 'sir': 'dame',
@@ -2396,6 +2400,7 @@ var correspondance_singulier=[
 ["crapuleux","crapuleuse"],
 ["crasseux","crasseuse"],
 ["crétois","crétoise"],
+["curieux","curieuse"],
 ["fils","fille"]
 ]
 var correspondance_pluriel=[
@@ -2442,6 +2447,7 @@ var correspondance_pluriel=[
 ["crapuleux","crapuleuses"],
 ["crasseux","crasseuses"],
 ["crétois","crétoises"],
+["curieux","curieuse"],
 ["fils","filles"]
 ]
 
@@ -2468,29 +2474,6 @@ var mot_fantom = '¤';
 // Pour les caractère qu'on a souvent peine à écrire
 var fautes_assumees_switch={'oe':'œ','œ':'oe'};
 
-<<<<<<< .mine
-var map = complete;
-var map_sujet={};
-var map_singulier={};
-var map_pluriel={};
-fill_switch_map(map,correspondance);
-fill_switch_map(map,correspondance_sujet);
-complete_current_faults(map,fautes_assumees_switch);
-fill_switch_map(map_sujet,correspondance_sujet);
-fill_switch_map(map_singulier,correspondance_singulier);
-fill_switch_map(map_pluriel,correspondance_pluriel);
-
-//Fonction qui recherche un mot dans notre tableau de mots
-function findMatch(word) {
-  return map[word];
-}
-function findMatchSingulier(word) {
-  return map_singulier[word];
-}
-function findMatchPluriel(word) {
-  return map_pluriel[word];
-}
-=======
 var map = complete;
 var map_sujet={};
 var map_singulier={};
@@ -2513,5 +2496,24 @@ function findMatchPluriel(word) {
   return map_pluriel[word];
 }
 
+var map = complete;
+var map_sujet={};
+var map_singulier={};
+var map_pluriel={};
+fill_switch_map(map,correspondance);
+fill_switch_map(map,correspondance_sujet);
+complete_current_faults(map,fautes_assumees_switch);
+fill_switch_map(map_sujet,correspondance_sujet);
+fill_switch_map(map_singulier,correspondance_singulier);
+fill_switch_map(map_pluriel,correspondance_pluriel);
 
->>>>>>> .r31
+//Fonction qui recherche un mot dans notre tableau de mots
+function findMatch(word) {
+  return map[word];
+}
+function findMatchSingulier(word) {
+  return map_singulier[word];
+}
+function findMatchPluriel(word) {
+  return map_pluriel[word];
+}
