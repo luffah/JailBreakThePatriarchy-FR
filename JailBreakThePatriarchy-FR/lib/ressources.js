@@ -67,59 +67,6 @@ function complete_current_faults(map,map_fault){
   }
 }
 
-// Fonctions
-
-// Permet de définir un à un les caractères dans un mot
-String.prototype.setCharAt = function(idx, chr) {
-  if(idx > this.length - 1){
-    return this.toString();
-  } else {
-    return this.substr(0, idx) + chr + this.substr(idx + 1);
-  }
-};
-
-String.prototype.getCharIndexes = function(charlist) {
-  var idx;
-  var l_indexes=[];
-  for(var i=0; i<charlist.length; i++){
-    idx = this.indexOf(charlist[i], idx + 1);
-    while (idx != -1) {
-      l_indexes.push([idx,charlist[i]]);
-      idx = this.indexOf(charlist[i], idx + 1);
-    }
-  }
-  return l_indexes;
-};
-
-//Récupère les mots clés du dictionnaire dans le format Regex
-function concatString(obj) {
-  var parts = [];
-  for (key in obj) {
-    parts.push(key);
-  }
-  return parts.join('|');
-};
-
-// Met les éléments de table de correspondances [[a,b],[d,e]...] dans le dictionnaire {a:b,b:a,d:e,e:d...}
-function fill_switch_map(h_tab,t){
-  for(var i=0; i<t.length; i++){
-    h_tab[t[i][0]]=t[i][1];
-    h_tab[t[i][1]]=t[i][0];
-    if ((t[i].length > 2) && (t[i][2].length > 0)) {
-      h_tab[t[i][0]+t[i][2]]=t[i][1]+t[i][2];
-      h_tab[t[i][1]+t[i][2]]=t[i][0]+t[i][2];
-    }
-  }
-}
-
-//
-function complete_current_faults(map,map_fault){
-  var re=new RegExp('('+concatString(map_fault)+')','ig');
-  for (key in map) {
-    if (re.test(key)) map[key.replace(re,function (ch) { return map_fault[ch]; })]=map[key];
-  }
-}
-
 // Variables - dictionnaire
 var complete = {
 	//Last Update : Line = 864
