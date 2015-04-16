@@ -69,11 +69,8 @@ function complete_current_faults(map,map_fault){
 
 // Variables - dictionnaire
 var complete = {
-	//Last Update : Line = 864
-	//Total Words : 17.122 Words
-	//Droits de la femme et de la citoyenne : TO DO
-	//Droits de l'homme et du citoyen : TO DO
-	//Marseillaise : IN PROGRESS
+	//Last Update : Line = 961 (D)
+	//Total Words : 17.420 Words
   // -A-
   'abéché': 'abéchée', 'abéchée': 'abéché', 'abéchés': 'abéchées', 'abéchées': 'abéchés',
   'abaissé': 'abaissée', 'abaissée': 'abaissé', 'abaissés': 'abaissées', 'abaissées': 'abaissés',
@@ -2298,7 +2295,9 @@ var correspondance=[
 var correspondance_sujet=[
 ["contre elles","contre eux"],
 ["contre elle","contre lui"],
+["chez elle","chez lui"],
 ["pour elle","pour lui"],
+["une d'elles","un d'eux"],
 ["d'elle","de lui"],
 ["elles","ils"]
 ]
