@@ -15,19 +15,15 @@
 //    Yoann LABONNE <yoann.labonne@gmail.com> -> filling the dictionnary 
 
 // Définition pour mettre les mots en gras en post-processing
-var bracket_sw=["o_tag/o","o/tag_o"];
-var bracket_nosw=["o_nochange/o","o/nochange_o"];
-var open_bracket_sw =new RegExp("(" + bracket_sw[0] + ")" ,'g');
-var close_bracket_sw =new RegExp("(" + bracket_sw[1] + ")" ,'g');
-var open_bracket_nosw =new RegExp("(" + bracket_nosw[0] + ")" ,'g');
-var close_bracket_nosw =new RegExp("(" + bracket_nosw[1] + ")" ,'g');
+var bracket_sw=["o_jailbreak_begin/jailbreak_old/o","o/end_jailbreak_o","o/jailbreak_new/o"];
+var bracket_nosw=["jailbreak_nochange/","/nochange_jailbreak"];
+var re_expr_sw =new RegExp( bracket_sw[0] + "([ " + wcharset + wbindset + "]+)" +  bracket_sw[2] + "([ " + wcharset + wbindset + "]+)" +  bracket_sw[1] ,'ig');
+var re_expr_nosw =new RegExp( bracket_nosw[0] + "([ " + wcharset + wbindset + "]+)" + bracket_nosw[1] ,'ig');
 function post_processing_innerHTML(body,options){
   //~ if (body == undefined) return ;
   //~ if (body.innerHTML == undefined) return ;
-  //~ body.innerHTML = body.innerHTML.replace(open_bracket_sw,'<STRONG>').replace(close_bracket_sw,'</STRONG>');
-  //~ body.innerHTML = body.innerHTML.replace(open_bracket_nosw,'*').replace(close_bracket_nosw,'*');
-  body.innerHTML = body.innerHTML.replace(open_bracket_sw,options.BaliseMotChangeO).replace(close_bracket_sw,options.BaliseMotChangeF);
-  body.innerHTML = body.innerHTML.replace(open_bracket_nosw,options.BaliseMotInchangeO).replace(close_bracket_nosw,options.BaliseMotInchangeF);
+  body.innerHTML = body.innerHTML.replace(re_expr_sw,options.BaliseMotChange);
+  body.innerHTML = body.innerHTML.replace(re_expr_nosw,options.BaliseMotInchange);
 }
 
 // Normalise les caractères
@@ -77,7 +73,7 @@ function matchCase(old_word, replacement) {
   for(var i=0; i<t_bindset.length; i++){// remet les caractères de liaisons
       ret=ret.setCharAt(t_bindset[i][0],t_bindset[i][1]);
   }
-  return bracket_sw[0] + ret.replace(' ' + mot_fantom +' ',' ') + bracket_sw[1];
+  return bracket_sw[0] + old_word +  bracket_sw[2] + ret.replace(' ' + mot_fantom +' ',' ')  + bracket_sw[1]  ;
 }
 
 //~ A faire ? -> var dernier_genre; // détection du genre changé pour déterminer la substitution suivante dans la phrase
