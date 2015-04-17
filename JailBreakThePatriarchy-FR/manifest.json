@@ -1,6 +1,6 @@
 {
   "name": "Au revoir patrie",
-  "version": "0.1",
+  "version": "0.36",
   "manifest_version": 2,
   "description": "Extension d'inversion du genre dans tout les textes en français. (Fork of Jailbreak the Patriarchy)",
   "background": {
